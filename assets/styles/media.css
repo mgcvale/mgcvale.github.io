@@ -1,0 +1,47 @@
+@import url("variables.css");
+
+img {
+    border: solid var(--border) 3px;
+    border-radius: 11px;
+    padding: 4px !important;
+}
+
+.block-container {
+    display: block;
+}
+
+.margin-container {
+    width: 80%;
+    margin: auto;
+}
+
+.img-container * {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.img-container-margin * {
+    margin: auto;
+    padding: 0;
+    width: 70%;
+}
+
+
+.blog-img {
+    width: 40%;
+}
+
+.medium-img {
+    width: 60%;
+}
+
+.small-img {
+    width: 30%;
+}
+
+.logo {
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+}
