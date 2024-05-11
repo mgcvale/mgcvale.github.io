@@ -1,0 +1,3 @@
+- Adicionar responsividade da navbar e footer
+- adiconar pdcast nos projetos
+- melhorar a pagina dos contatos
