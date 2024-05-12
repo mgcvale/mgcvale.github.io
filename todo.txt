@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 - add "nav-anchor" class to nav anchors
+=======
+>>>>>>> 6d2c6ed27a34dee1bf7050ce918f1c4b92c89b3c
 - Adicionar responsividade da navbar e footer
 - adiconar pdcast nos projetos
 - melhorar a pagina dos contatos
