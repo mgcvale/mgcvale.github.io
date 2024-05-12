@@ -1,0 +1,4 @@
+- add "nav-anchor" class to nav anchors
+- Adicionar responsividade da navbar e footer
+- adiconar pdcast nos projetos
+- melhorar a pagina dos contatos

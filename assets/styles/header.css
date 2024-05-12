@@ -8,7 +8,7 @@ nav {
     justify-content: space-evenly;
     align-items: center;
     position: sticky;
-    top: 8px;
+    top: 1%;
     width: 98%;
 
     background-color: var(--bg);
@@ -84,6 +84,7 @@ nav * {
     border-color: var(--border-brighter);
     filter: drop-shadow(0 0 3px var(--bg-light));
     background-color: var(--bg3);
+    border-width: 3px;
 }
 
 .current-page-div:hover {

@@ -20,7 +20,7 @@ a {
     transition: 300ms;
 }
 
-a:hover {
+.nav-anchor:hover {
     color: var(--fg-brighter);
     filter: drop-shadow(0px 0px 3px var(--bg-light));
     transition: 300ms

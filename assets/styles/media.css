@@ -2,8 +2,18 @@
 
 img {
     border: solid var(--border) 3px;
-    border-radius: 11px;
-    padding: 4px !important;
+    border-radius: 12px;
+    padding: 4px;
+}
+
+.clickable-img {
+    transition: 300ms;
+}
+
+.clickable-img:hover {
+    transition: 250ms;
+    transform: scale(1.01);
+    cursor: pointer;
 }
 
 .block-container {
@@ -17,13 +27,11 @@ img {
 
 .img-container * {
     margin: 0;
-    padding: 0;
     width: 100%;
 }
 
 .img-container-margin * {
     margin: auto;
-    padding: 0;
     width: 70%;
 }
 
