@@ -10,7 +10,7 @@ setInterval(() => {
         previousBodyHeight = currentBodyHeight;
         chcekFooter();
     }
-}, 1000);
+}, 2000);
 
 function chcekFooter() {
     const bodyHeight = getBodyHeight();
@@ -29,11 +29,11 @@ function getBodyHeight() {
 }
 
 function fixFooter() {
-    document.getElementsByTagName("footer")[0].id = "incomplete-footer";
+    document.getElementsByTagName("footer")[0].className += " incomplete-footer";
     document.getElementById("main").className = "incomplete";
 }
 
 function unfixFooter() {
-    document.getElementsByTagName("footer")[0].id = "";
+    document.getElementsByTagName("footer")[0].className += "";
     document.getElementById("main").className = "";
 }

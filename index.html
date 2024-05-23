@@ -15,6 +15,10 @@
 </head>
 <body>
     <nav>
+        <div id="open-nav-div">
+            <button id="open-nav-button" onclick="openNav()"><img id="open-nav-button-img" src="/assets/images/icons/website/menu.png"></button>
+            <h2 id="open-nav-div-title">Home</h2>
+        </div>
         <div class="button-div current-page-div"><a href="#" class="current-page">Home</a></div>
         <div class="button-div"><a href="sobre.html">Sobre mim</a></div>
         <h2 id="title">Home</h2>
@@ -61,7 +65,7 @@
                 E, para além da programação, um pouco de edição de vídeos! Eu também faco parte da equipe de edição de vídeos do PDCast, podcast do meu curso técnico no Cotil - Unicamp.
             </p><br>
             <div class="center-align img-container">
-                <img src="assets/images/pdcast.jpg" class="blog-img">
+                <a href="https://www.instagram.com/_pdcast/" target="_blank"><img src="assets/images/pdcast.jpg" class="blog-img clickable-img"></a>
                 <p><small>PDCast - Podcast do curso de Desenvolvimento de Sistemas do COTIL</small></p>
             </div>
         </div>
@@ -121,6 +125,7 @@
             </div>
         </div>
     </footer>
-    <script src="scripts/footer.js"></script>
+    <script src="scripts/footer-fix.js"></script>
+    <script src="scripts/responsiveness/navbar.js"></script>
 </body>
 </html>
