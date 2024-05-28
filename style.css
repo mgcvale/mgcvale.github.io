@@ -30,6 +30,7 @@ a {
 h1, h2, h3, h4, h5 {
     font-family: "Fira Code", monospace;
     font-weight: 400;
+    color: var(--fg);
 }
 
 h1 {
@@ -99,6 +100,21 @@ hr {
 .subtitle {
     filter: drop-shadow(0 0 4px var(--bg-medium));
     font-weight: 500;
+}
+
+@media only screen and (orientation: portrait) {
+    p {
+        font-size: 0.85em;
+        width: 90%;
+    }
+
+    h1, h2, h3, h4, h5 {
+        font-size: 0.85em;
+    }
+
+    #main {
+        width: 85%;
+    }
 }
 
 
