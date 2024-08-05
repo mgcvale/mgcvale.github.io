@@ -1,7 +1,7 @@
 @import url("variables.css");
 
 img {
-    border: solid var(--border) 3px;
+    border: solid var(--border) 2px;
     border-radius: 12px;
     padding: 4px;
 }
