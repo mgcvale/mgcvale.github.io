@@ -6,6 +6,10 @@ img {
     padding: 4px;
 }
 
+.no-border {
+    border: none;
+}
+
 .clickable-img {
     transition: 300ms;
 }
