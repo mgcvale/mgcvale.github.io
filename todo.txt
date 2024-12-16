@@ -1,3 +1,0 @@
-- add "nav-anchor" class to nav anchors
-- melhorar responsividade do footer
-- melhorar a pagina do contato
