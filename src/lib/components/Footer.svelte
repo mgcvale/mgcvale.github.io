@@ -1,0 +1,32 @@
+<script lang="ts">
+    import FloatingDockDesktop from "$lib/components/FloatingDockDesktop.svelte";
+    import FloatingDockMobile from "$lib/components/FloatingDockMobile.svelte";
+    import type {DockItem} from "$lib/types";
+    import { SwatchBook } from 'lucide-svelte';
+
+    let items: DockItem[] = [
+        {
+            icon: SwatchBook,
+            href: "#",
+            title: "Change theme",
+            action: changeTheme,
+        },
+    ]
+
+    function changeTheme() {
+        if (document.querySelector("html")?.classList.contains("dark")) {
+            document.querySelector("html")?.classList.remove("dark");
+        } else {
+            document.querySelector("html")?.classList.add("dark");
+        }
+    }
+</script>
+
+<footer class="fixed bottom-0 w-full flex justify-center align-middle m-4">
+    <FloatingDockDesktop {items} className={""}/>
+    <FloatingDockMobile {items} />
+</footer>
+
+<style lang="scss">
+
+</style>
