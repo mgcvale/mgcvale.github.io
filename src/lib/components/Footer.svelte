@@ -4,6 +4,8 @@
     import type {DockItem} from "$lib/types";
     import { SwatchBook } from 'lucide-svelte';
 
+    let { ref = $bindable() } = $props();
+
     let items: DockItem[] = [
         {
             icon: SwatchBook,
@@ -22,7 +24,7 @@
     }
 </script>
 
-<footer class="fixed bottom-0 w-full flex justify-center align-middle m-4">
+<footer bind:this={ref} id="footer" class="fixed bottom-0 w-full flex justify-center align-middle m-4">
     <FloatingDockDesktop {items} className={""}/>
     <FloatingDockMobile {items} />
 </footer>

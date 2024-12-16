@@ -1,2 +1,7 @@
 @use 'reset.scss';
 @use 'util.scss';
+
+.window-section {
+  top: var(--top);
+  left: var(--left);
+}
