@@ -5,7 +5,11 @@
     import { appMetadata } from '../stores/metadataStore';
     import {onMount} from "svelte";
     import Window from "$lib/components/Window.svelte";
-    import {windowController} from "../stores/windowController.svelte";
+    import {windowController} from "../controller/windowController.svelte.js";
+    import AboutWindow from "$lib/components/windows/AboutWindow.svelte";
+    import GridPattern from "$lib/components/GridPattern.svelte";
+    import {cn} from "$lib/util";
+    import SidWindow from "$lib/components/windows/SidWindow.svelte";
 
     let header: HTMLElement;
     let footer: HTMLElement;
@@ -44,11 +48,31 @@
 
 <Header bind:ref={header}></Header>
 <main>
-    {#snippet content()}
-        <div>
-            <h2 class="m-auto">Testando</h2>
-        </div>
-    {/snippet}
-    <Window name={"test window"} content={content}></Window>
+    <Window name={"about"}>
+        <AboutWindow />
+    </Window>
+    <Window name="WARNING">
+        <SidWindow/>
+    </Window>
+    <GridPattern
+            squares={[
+      [4, 4],
+      [5, 1],
+      [8, 2],
+      [6, 6],
+      [10, 5],
+      [13, 3],
+    ]}
+            className={cn(
+                "background",
+                "-z-10",
+                "fixed"
+            )}
+            x={-10}
+            y={-10}
+            width={120}
+            height={80}
+            fillColor="rgb(156 163 175 / 0.3)"
+    />
 </main>
 <Footer bind:ref={footer}></Footer>

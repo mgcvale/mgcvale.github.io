@@ -24,8 +24,8 @@
     }
 </script>
 
-<footer bind:this={ref} id="footer" class="fixed bottom-0 w-full flex justify-center align-middle m-4">
-    <FloatingDockDesktop {items} className={""}/>
+<footer bind:this={ref} id="footer" class="fixed bottom-0 w-full flex justify-center align-middle m-4" style="z-index: 999">
+    <FloatingDockDesktop {items} className={"drop-shadow-md"}/>
     <FloatingDockMobile {items} />
 </footer>
 

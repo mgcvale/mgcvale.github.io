@@ -1,2 +1,25 @@
 @use 'reset.scss';
 @use 'util.scss';
+
+hr {
+  margin: 1rem .6rem;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow: hidden;
+
+  &.dark {
+    .background {
+      background: radial-gradient(circle at 34.5% 34.5%, black, transparent);
+    }
+  }
+}
+
+.background {
+  transition: 1000ms;
+    transform: scale(2, 1) skewX(-20deg) skewY(20deg);
+    background: radial-gradient(circle at 34.5% 34.5%, white, transparent);
+    width: 200vw;
+    height: 200vh;
+}

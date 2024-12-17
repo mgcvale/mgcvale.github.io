@@ -1,11 +1,11 @@
 <script lang="ts">
     import {appMetadata, type Pair} from "../../stores/metadataStore";
     import { X, ChevronUp, ChevronDown } from 'lucide-svelte';
-    import {windowController} from "../../stores/windowController.svelte";
+    import {windowController} from "../../controller/windowController.svelte.js";
     import {onMount} from "svelte";
     import {Spring} from "svelte/motion";
     
-    let { name, content } = $props();
+    let { name, children } = $props();
 
     // fullscreen stuff
     let fullscreen: boolean = $state(false);
@@ -15,9 +15,12 @@
     let section: HTMLElement;
     let dragElement: HTMLElement;
 
-    // resizing states
+    // some states
     let isResizing = $state(false);
     let resizeDirection: string = $state('');
+    let sectionMouseDown: boolean = $state(false);
+    let sectionRightMouseDown: boolean = $state(false);
+    let minimized: boolean = $state(false);
 
     // window dimensions and coordinates
     let height: number = $state(0);
@@ -42,6 +45,7 @@
     // resize handles
     let northHandle: HTMLElement, southHandle: HTMLElement, eastHandle: HTMLElement, westHandle: HTMLElement;
     let northeastHandle: HTMLElement, northwestHandle: HTMLElement, southeastHandle: HTMLElement, southwestHandle: HTMLElement;
+    let altNortheastHandle: HTMLElement, altNorthwestHandle: HTMLElement, altSoutheastHandle: HTMLElement, altSouthwestHandle: HTMLElement;
 
     $effect(() => {
         if (fullscreen) {
@@ -81,12 +85,25 @@
         });
 
         section.onmousedown = (e: MouseEvent) => {
+            if (windowController.altDown) {
+                e.preventDefault();
+            }
             windowController.focusNotifier.notify();
             section.style.zIndex = '99';
 
+            if (e.button === 0)
+                sectionMouseDown = true;
+            else if (e.button === 2)
+                sectionRightMouseDown = true;
             initialSectionX = e.clientX - springX.current;
             initialSectionY = e.clientY - springY.current;
         };
+
+        section.oncontextmenu = (e: MouseEvent) => {
+            if (windowController.altDown) {
+                e.preventDefault();
+            }
+        }
 
         dragElement.onmousedown = (e: MouseEvent) => {
             windowController.focusNotifier.notify();
@@ -97,12 +114,16 @@
         };
 
         const unsubscribe2 = windowController.mouseCoords.subscribe((newcoords: Pair) => {
+            console.log(newcoords, dragElement.matches(":active"));
             if (dragElement.matches(":active")) {
+                console.log("Matches");
                 springY.target = newcoords.y - initialHeaderY;
                 springX.target = newcoords.x - initialHeaderX;
-            } else if (windowController.altDown && section.matches(":active")) {
-                springY.target = newcoords.y - initialSectionY;
-                springX.target = newcoords.x - initialSectionX;
+            } else if (windowController.altDown) {
+                if (sectionMouseDown) {
+                    springY.target = newcoords.y - initialSectionY;
+                    springX.target = newcoords.x - initialSectionX;
+                }
             }
 
             const currentX = springX.current;
@@ -133,8 +154,15 @@
             { direction: 'nw', element: northwestHandle },
             { direction: 'ne', element: northeastHandle },
             { direction: 'sw', element: southwestHandle },
-            { direction: 'se', element: southeastHandle }
+            { direction: 'se', element: southeastHandle },
         ];
+
+        const altResizeHandles = [
+            { direction: 'nw', element: altNorthwestHandle },
+            { direction: 'ne', element: altNortheastHandle },
+            { direction: 'sw', element: altSouthwestHandle },
+            { direction: 'se', element: altSoutheastHandle },
+        ]
 
         resizeHandles.forEach(({ direction, element }) => {
             element.onmousedown = (e: MouseEvent) => {
@@ -146,8 +174,13 @@
             };
         });
 
-        function mouseup() {
+        function mouseup(e: MouseEvent) {
             isResizing = false;
+
+            if (e.button === 0)
+                sectionMouseDown = false;
+            else if (e.button === 2)
+                sectionRightMouseDown = false;
         }
 
         window.addEventListener('mouseup', mouseup);
@@ -161,42 +194,61 @@
 
 </script>
 
-<section style:--cursor={windowController.altDown ? "move" : "default"}
+<section class:minimized={minimized} style:--cursor={(windowController.altDown && sectionMouseDown) ? "grab" : "default"}
          style:--top={`${springY.current - resizeTop.current}px`} style:--left={`${springX.current + resizeLeft.current}px`}
          style:--width={`${width + resizeRight.current - resizeLeft.current}px`} style:--height={`${height + resizeTop.current - resizeBottom.current}px`}
          bind:this={section} class="window-section drop-shadow-xl fixed flex flex-col align-top justify-start border-3 border-white dark:border-neutral-900 rounded-lg mx-4 my-2 mt-0 overflow-hidden">
-    <header class="flex justify-between items-center flex-grow-0 bg-white dark:bg-neutral-900 overflow-hidden px-1 text-center pb-1">
-        <div bind:this={dragElement} class="drag-area flex-grow h-full cursor-move">
+    <header class="flex justify-end items-center flex-grow-0 bg-white dark:bg-neutral-900 px-1 text-center pb-1">
+        <div bind:this={dragElement} class="drag-area flex-grow cursor-move">
             <h3 class="orbitron text-sm text-left select-none">{name}</h3>
         </div>
-        <div class="flex flex-grow-0 gap-0.5 [&>*]:cursor-pointer">
+        <div class="flex flex-grow-0 gap-0.5 [&>*]:cursor-pointer pr-1">
             <ChevronUp onclick={() => { fullscreen = !fullscreen; fullscreenModeChanged = true }} class="hover:scale-125 transition-all active:scale-100"  size={16} />
-            <ChevronDown class="hover:scale-125 transition-all active:scale-100"  size={16} />
-            <X class="hover:scale-125 transition-all active:scale-100" size={16} />
+            <ChevronDown onclick={() => minimized=true} class="hover:scale-125 transition-all active:scale-100"  size={16} />
+            <X class="hover:scale-125 transition-all active:scale-100" size={16}/>
         </div>
     </header>
-    <div class="window-content flex-grow bg-neutral-200 dark:bg-neutral-700 p-2">
-        {@render content()}
+    <div class="window-content flex-grow bg-neutral-200 dark:bg-neutral-700 p-2 overflow-x-scroll">
+        {@render children()}
     </div>
 
     <!-- resizing handles -->
-    <div bind:this={northHandle} class="absolute top-0 left-0 right-0 h-3 cursor-ns-resize"></div>
-    <div bind:this={southHandle} class="absolute bottom-0 left-0 right-0 h-3 cursor-ns-resize"></div>
-    <div bind:this={eastHandle} class="absolute right-0 top-0 bottom-0 w-3 cursor-ew-resize"></div>
-    <div bind:this={westHandle} class="absolute left-0 top-0 bottom-0 w-4 cursor-ew-resize"></div>
+    <div bind:this={northHandle} class="absolute top-0 left-0 right-0 h-1 cursor-ns-resize"></div>
+    <div bind:this={southHandle} class="absolute bottom-0 left-0 right-0 h-2 cursor-ns-resize"></div>
+    <div bind:this={eastHandle} class="absolute right-0 top-0 bottom-0 w-2 cursor-ew-resize"></div>
+    <div bind:this={westHandle} class="absolute left-0 top-0 bottom-0 w-2 cursor-ew-resize"></div>
 
     <div bind:this={northwestHandle} class="absolute top-0 left-0 w-4 h-4 cursor-nwse-resize"></div>
     <div bind:this={northeastHandle} class="absolute top-0 right-0 w-4 h-4 cursor-nesw-resize"></div>
     <div bind:this={southwestHandle} class="absolute bottom-0 left-0 w-4 h-4 cursor-nesw-resize"></div>
     <div bind:this={southeastHandle} class="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize"></div>
+
+    <div bind:this={altNorthwestHandle} style:--display={windowController.altDown && sectionRightMouseDown ? "block" : "none"} class="alt-handle absolute top-0 left-0 w-1/2 h-1/2 cursor-nwse-resize"></div>
+    <div bind:this={altNortheastHandle} style:--display={windowController.altDown && sectionRightMouseDown ? "block" : "none"} class="alt-handle absolute top-0 right-0 w-1/2 h-1/2 cursor-nesw-resize"></div>
+    <div bind:this={altSouthwestHandle} style:--display={windowController.altDown && sectionRightMouseDown ? "block" : "none"} class="alt-handle absolute bottom-0 left-0 w-1/2 h-1/2 cursor-nesw-resize"></div>
+    <div bind:this={altSoutheastHandle} style:--display={windowController.altDown && sectionRightMouseDown ? "block" : "none"} class="alt-handle absolute bottom-0 right-0 w-1/2 h-1/2 cursor-nwse-resize"></div>
 </section>
 
 <style lang="scss">
     .window-section {
-    top: var(--top);
-    left: var(--left);
-    height: var(--height);
-    width: var(--width);
-    cursor: var(--cursor);
+        top: var(--top);
+        left: var(--left);
+        height: var(--height);
+        width: var(--width);
+        cursor: var(--cursor);
+    }
+
+    .alt-handle {
+        display: var(--display);
+    }
+
+    section {
+      transition: opacity 700ms, transform 700ms;
+      transition-timing-function: cubic-bezier(0.45, -0.5, 0.5, 1);
+    }
+
+    section.minimized {
+        transform: scale(0);
+        opacity: 0;
     }
 </style>

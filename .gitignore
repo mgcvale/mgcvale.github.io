@@ -19,7 +19,7 @@ coverage
 .vercel
 .svelte-kit/
 build/
-
+public_html/
 # OS-specific
 .DS_Store
 

@@ -1,6 +1,6 @@
-import type {Pair} from "./metadataStore";
+import type {Pair} from "../stores/metadataStore";
 import {writable, type Writable} from "svelte/store";
-import {Notifier} from "../util/notifier.js";
+import {Notifier} from "../util/notifier.js.js";
 
 export class WindowControllerSvelte {
     focusNotifier: Notifier;
