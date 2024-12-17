@@ -6,31 +6,42 @@
     import {Spring} from "svelte/motion";
     
     let { name, content } = $props();
+
+    // fullscreen stuff
     let fullscreen: boolean = $state(false);
     let fullscreenModeChanged: boolean = true;
+
+    // two main drag elements
     let section: HTMLElement;
     let dragElement: HTMLElement;
-    let resizeDirection: string = $state('');
-    let isResizing = $state(false);
 
+    // resizing states
+    let isResizing = $state(false);
+    let resizeDirection: string = $state('');
+
+    // window dimensions and coordinates
     let height: number = $state(0);
     let width: number = $state(0);
-
-    let initialHeaderX = 0;
-    let initialHeaderY = 0;
-    let initialSectionX = 0;
-    let initialSectionY = 0;
     let springX = new Spring(0);
     let springY = new Spring(0);
-    let northHandle: HTMLElement, southHandle: HTMLElement, eastHandle: HTMLElement, westHandle: HTMLElement;
-    let northeastHandle: HTMLElement, northwestHandle: HTMLElement, southeastHandle: HTMLElement, southwestHandle: HTMLElement;
+
+    // window resize factors
     let resizeTop: Spring<number> = new Spring(0);
     let resizeRight: Spring<number> = new Spring(0);
     let resizeLeft: Spring<number> = new Spring(0);
     let resizeBottom: Spring<number> = new Spring(0);
+
+    // offsetX and offsetY of resize and move handles
+    let initialHeaderX = 0;
+    let initialHeaderY = 0;
+    let initialSectionX = 0;
+    let initialSectionY = 0;
     let resizePositionX = 0;
     let resizePositionY = 0;
 
+    // resize handles
+    let northHandle: HTMLElement, southHandle: HTMLElement, eastHandle: HTMLElement, westHandle: HTMLElement;
+    let northeastHandle: HTMLElement, northwestHandle: HTMLElement, southeastHandle: HTMLElement, southwestHandle: HTMLElement;
 
     $effect(() => {
         if (fullscreen) {
@@ -65,7 +76,7 @@
         fullscreenModeChanged = true;
         toDefaultSize();
 
-        const unsubscribe2 = windowController.focusNotifier.subscribe(() => {
+        const unsubscribe1 = windowController.focusNotifier.subscribe(() => {
             section.style.zIndex = '0';
         });
 
@@ -85,7 +96,7 @@
             initialHeaderY = e.clientY - springY.current;
         };
 
-        const unsubscribe1 = windowController.mouseCoords.subscribe((newcoords: Pair) => {
+        const unsubscribe2 = windowController.mouseCoords.subscribe((newcoords: Pair) => {
             if (dragElement.matches(":active")) {
                 springY.target = newcoords.y - initialHeaderY;
                 springX.target = newcoords.x - initialHeaderX;
@@ -128,10 +139,8 @@
         resizeHandles.forEach(({ direction, element }) => {
             element.onmousedown = (e: MouseEvent) => {
                 e.preventDefault();
-                console.log("resizing");
                 isResizing = true;
                 resizeDirection = direction;
-                windowController.focusNotifier.notify();
                 resizePositionX = e.offsetX;
                 resizePositionY = e.offsetY;
             };
@@ -180,5 +189,14 @@
     <div bind:this={northeastHandle} class="absolute top-0 right-0 w-4 h-4 cursor-nesw-resize"></div>
     <div bind:this={southwestHandle} class="absolute bottom-0 left-0 w-4 h-4 cursor-nesw-resize"></div>
     <div bind:this={southeastHandle} class="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize"></div>
-
 </section>
+
+<style lang="scss">
+    .window-section {
+    top: var(--top);
+    left: var(--left);
+    height: var(--height);
+    width: var(--width);
+    cursor: var(--cursor);
+    }
+</style>
