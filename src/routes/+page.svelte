@@ -5,7 +5,7 @@
     import { appMetadata } from '../stores/metadataStore';
     import {onMount} from "svelte";
     import Window from "$lib/components/Window.svelte";
-    import {windowController} from "../stores/windowController";
+    import {windowController} from "../stores/windowController.svelte";
 
     let header: HTMLElement;
     let footer: HTMLElement;
