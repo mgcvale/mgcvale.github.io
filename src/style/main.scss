@@ -4,5 +4,7 @@
 .window-section {
   top: var(--top);
   left: var(--left);
+  height: var(--height);
+  width: var(--width);
   cursor: var(--cursor);
 }
