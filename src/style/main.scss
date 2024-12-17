@@ -11,15 +11,25 @@ html {
 
   &.dark {
     .background {
-      background: radial-gradient(circle at 34.5% 34.5%, black, transparent);
+      background: radial-gradient(circle at center, black, transparent);
     }
   }
 }
 
 .background {
-  transition: 1000ms;
-    transform: scale(2, 1) skewX(-20deg) skewY(20deg);
-    background: radial-gradient(circle at 34.5% 34.5%, white, transparent);
-    width: 200vw;
-    height: 200vh;
+  --scale: 2;
+  position: absolute;
+  top: -50vh;
+  left: -50vw;
+  z-index: -20;
+  transition: 500ms cubic-bezier(0,.99,.62,1.07);
+  transform: rotateX(50deg) rotateY(-15deg) rotateZ(40deg) scale(var(--scale));
+  background: radial-gradient(circle at center, white, rgb(180, 180, 180));
+  width: 200vw;
+  height: 200vh;
+  border-radius: 10vh;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 }

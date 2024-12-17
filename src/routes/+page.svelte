@@ -62,16 +62,17 @@
       [6, 6],
       [10, 5],
       [13, 3],
+      [14, 4],
     ]}
             className={cn(
                 "background",
                 "-z-10",
                 "fixed"
             )}
-            x={-10}
-            y={-10}
-            width={120}
-            height={80}
+            x={0}
+            y={0}
+            width={50}
+            height={40}
             fillColor="rgb(156 163 175 / 0.3)"
     />
 </main>

@@ -1,11 +1,29 @@
 <script lang="ts">
     import { cn } from "$lib/util";
     import type {Pair} from "../../stores/metadataStore";
+    import {onMount} from "svelte";
     let { className, width = 40, height = 40, x = -1, y = -1, strokeDashArray = "", squares, fillColor = "rgb(156 163 175 / 0.3)", strokeWidth = 1 } = $props();
     let id = crypto.randomUUID().toString().slice(0, 8);
+    let scrollQuantity = $state(0);
+
+    function handleWheelEvent(e: WheelEvent) {
+        if (e.target === document.body) {
+            scrollQuantity = Math.min(2000, Math.max(-1000, scrollQuantity - e.deltaY));
+        }
+
+    }
+
+    onMount(() => {
+        window.addEventListener("wheel", handleWheelEvent, {passive: false});
+
+        return () => {
+            window.removeEventListener("wheel", handleWheelEvent);
+        }
+    });
 </script>
 
 <svg
+    style:--scale={2 + scrollQuantity * 0.002}
     aria-hidden="true"
     class={cn(
     "pointer-events-none absolute inset-0 h-full w-full",

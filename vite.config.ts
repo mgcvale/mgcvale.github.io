@@ -13,5 +13,9 @@ export default defineConfig({
 	},
 	build: {
 		outDir: 'public_html',
-	}
+	},
+	server: {
+		host: '0.0.0.0',
+		port: 5173,
+	},
 });

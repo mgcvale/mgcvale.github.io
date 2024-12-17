@@ -114,9 +114,7 @@
         };
 
         const unsubscribe2 = windowController.mouseCoords.subscribe((newcoords: Pair) => {
-            console.log(newcoords, dragElement.matches(":active"));
             if (dragElement.matches(":active")) {
-                console.log("Matches");
                 springY.target = newcoords.y - initialHeaderY;
                 springX.target = newcoords.x - initialHeaderX;
             } else if (windowController.altDown) {
@@ -208,7 +206,7 @@
             <X class="hover:scale-125 transition-all active:scale-100" size={16}/>
         </div>
     </header>
-    <div class="window-content flex-grow bg-neutral-200 dark:bg-neutral-700 p-2 overflow-x-scroll">
+    <div class="window-content disable-scroll-effects flex-grow bg-neutral-200 dark:bg-neutral-700 p-2 overflow-x-scroll">
         {@render children()}
     </div>
 
