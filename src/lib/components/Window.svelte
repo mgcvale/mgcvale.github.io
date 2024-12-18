@@ -5,7 +5,7 @@
     import {onMount} from "svelte";
     import {Spring} from "svelte/motion";
     
-    let { name, children, minimized = $bindable(true) } = $props();
+    let { name, children, minimized = $bindable(true), close } = $props();
 
     // fullscreen stuff
     let fullscreen: boolean = $state(false);
@@ -202,7 +202,7 @@
         <div class="flex flex-grow-0 gap-0.5 [&>*]:cursor-pointer pr-1">
             <ChevronUp onclick={() => { fullscreen = !fullscreen; fullscreenModeChanged = true }} class="hover:scale-125 transition-all active:scale-100"  size={16} />
             <ChevronDown onclick={() => minimized=true} class="hover:scale-125 transition-all active:scale-100"  size={16} />
-            <X class="hover:scale-125 transition-all active:scale-100" size={16}/>
+            <X  onclick={() => close()} class="hover:scale-125 transition-all active:scale-100" size={16}/>
         </div>
     </header>
     <div class="window-content disable-scroll-effectsz flex-grow bg-neutral-200 dark:bg-neutral-700 p-2 overflow-x-scroll">

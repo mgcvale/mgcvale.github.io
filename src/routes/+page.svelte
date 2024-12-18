@@ -10,7 +10,7 @@
     import GridPattern from "$lib/components/GridPattern.svelte";
     import {cn} from "$lib/util";
     import SidWindow from "$lib/components/windows/SidWindow.svelte";
-    import {windowStore} from "../stores/windowStore";
+    import { WindowEntry, windowStore} from "../stores/windowStore.svelte";
     import { Info } from "lucide-svelte";
     import { TriangleAlert } from "lucide-svelte";
     import { scale } from 'svelte/transition'
@@ -51,34 +51,35 @@
         }
     });
 
-    windowStore.set([
-        {
-            title: "About",
-            component: AboutWindow,
-            minimized: true,
-            open: false,
-            icon: Info,
-        },
-        {
-            title: "WARNING",
-            component: SidWindow,
-            minimized: true,
-            open: false,
-            icon: TriangleAlert,
-        },
-    ]);
+    const windows: Map<string, WindowEntry> = new Map();
+    windows.set('About', new WindowEntry(
+        AboutWindow,
+        false,
+        true,
+        Info
+    ));
+    windows.set('WARNING', new WindowEntry(
+        AboutWindow,
+        false,
+        true,
+        TriangleAlert
+    ));
+    windowStore.set(windows);
 
 </script>
 
 <Header bind:ref={header}></Header>
 <main>
-    {#each $windowStore as window (window.title)}
-        {#if window.open}
-            <div>
-                <Window name={window.title} bind:minimized={window.minimized}>
-                    <svelte:component this={window.component} />
-                </Window>
-            </div>
+    {#each [...$windowStore] as [key, value]}
+        {#if value.open}
+            <Window name={key} bind:minimized={value.minimized} close={() => {
+                value.minimized = true;
+                setTimeout(() => {
+                    value.open = false;
+                }, 700);
+            }}>
+                <svelte:component this={value.component} />
+            </Window>
         {/if}
     {/each}
     <GridPattern

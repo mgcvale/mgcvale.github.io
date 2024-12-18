@@ -2,14 +2,12 @@
     import {
       useTransform,
       useSpring,
-      useMotionValue,
-      AnimatePresence,
     } from "svelte-motion";
     import { writable } from "svelte/store";
     import { Motion } from "svelte-motion";
-    import { fade } from "svelte/transition";
+    import { fade, scale } from "svelte/transition";
 
-    let { containerX, mouseX, title, icon, href, action } = $props();
+    let { containerX, mouseX, title, icon, href, action, dot=$bindable(false) } = $props();
 
     let ref: HTMLElement;
   
@@ -70,13 +68,24 @@
           </div>
         {/if}
         <!-- svelte-ignore svelte_component_deprecated -->
-        <div class="flex items-center  justify-center group-hover:scale-125 transition-all duration-200">
+        <div class="flex items-center justify-center group-hover:scale-125 transition-all duration-200">
           <svelte:component
             this={icon}
             strokeWidth={1.4}
             class=" text-neutral-500 dark:text-neutral-300"
           />
         </div>
+        {#if dot}
+          <div
+                  in:scale={{duration: 200, opacity: 0, delay: 700}}
+                  out:scale={{duration: 250, opacity: 0}}
+                  class="rounded-full absolute -bottom-1 left-1/2 bg-neutral-300 dark:bg-neutral-600" style="
+            width: 8px;
+            height: 8px;
+            bottom: -4px;
+            left: calc(50% - 4px)
+          "></div>
+        {/if}
       </div>
     </Motion>
   </a>
