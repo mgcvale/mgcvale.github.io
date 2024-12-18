@@ -24,7 +24,7 @@
             containerX.set(rect.x);
         }
     }}
-    class="mx-auto hidden md:flex h-16 gap-4 items-end rounded-full bg-gray-100 dark:bg-neutral-900 px-4 pb-3 border-2 border-gray-200 dark:border-gray-600 drop-shadow-sm {className}"
+    class="mx-auto flex h-16 gap-4 items-end rounded-full bg-gray-100 dark:bg-neutral-900 px-4 pb-3 border-2 border-gray-200 dark:border-gray-600 drop-shadow-sm {className}"
 >
     {#each items as item (item.title)}
         <IconContainer {mouseX} {containerX} {...item}/>

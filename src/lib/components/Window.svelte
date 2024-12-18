@@ -206,7 +206,7 @@
             <X class="hover:scale-125 transition-all active:scale-100" size={16}/>
         </div>
     </header>
-    <div class="window-content disable-scroll-effects flex-grow bg-neutral-200 dark:bg-neutral-700 p-2 overflow-x-scroll">
+    <div class="window-content disable-scroll-effectsz flex-grow bg-neutral-200 dark:bg-neutral-700 p-2 overflow-x-scroll">
         {@render children()}
     </div>
 
