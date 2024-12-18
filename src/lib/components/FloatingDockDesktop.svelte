@@ -1,8 +1,7 @@
 <script lang="ts">
     import { Motion, useMotionValue } from "svelte-motion";
     import IconContainer from "$lib/components/IconContainer.svelte";
-    import type {DockItem} from "$lib/types";
-    import {windowStore} from "../../stores/windowStore.svelte";
+    import { windowManager } from "../../stores/windowStore.svelte";
 
     let { items, className } = $props();
 
@@ -30,11 +29,13 @@
     {#each items as item (item.title)}
         <IconContainer {mouseX} {containerX} {...item}/>
     {/each}
-    {#each [...$windowStore] as [title, window]}
+    {#each windowManager.allWindows() as window}
         <IconContainer {mouseX} {containerX}
-            title={title}
+            title={window.name}
             href=""
-            action={window.action}
+            action={() => {
+                windowManager.windowActionPerformed(window);
+            }}
             bind:dot={window.open}
             icon={window.icon}
         />

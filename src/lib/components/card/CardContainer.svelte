@@ -35,7 +35,7 @@
             onmousemove={handleMouseMove}
             onmouseleave={handleMouseLeave}
             class={cn(
-			'relative flex items-center justify-center transition-all duration-200 ease-linear',
+			'relative flex items-center justify-center transition-all duration-200 ease-out',
 			className
 		)}
             style="transform-style: preserve-3d;"

@@ -2,7 +2,7 @@
     import { cn } from "$lib/util";
     import type {Pair} from "../../stores/metadataStore";
     import {onMount} from "svelte";
-    let { className, width = 40, height = 40, x = -1, y = -1, strokeDashArray = "", squares, fillColor = "rgb(156 163 175 / 0.3)", strokeWidth = 1 } = $props();
+    let { className, width = 40, height = 40, x = -1, y = -1, strokeDashArray = "", fillColor = "rgb(156 163 175 / 0.3)", strokeWidth = 1 } = $props();
     let id = crypto.randomUUID().toString().slice(0, 8);
     let scrollQuantity = $state(0);
 
@@ -42,19 +42,4 @@
         </pattern>
     </defs>
     <rect width="100%" height="100%" stroke-width={0} fill="url(#{id})" />
-    {#if squares}
-        <svg {x} {y} class="overflow-visible">
-            {#each squares as sq}
-                <rect
-                        stroke={fillColor}
-                        fill="none"
-                        stroke-width="0"
-                        width={width - 1}
-                        height={height - 1}
-                        x={sq[0] * width + 1}
-                        y={sq[1] * height + 1}
-                />
-            {/each}
-        </svg>
-    {/if}
 </svg>

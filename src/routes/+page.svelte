@@ -1,21 +1,15 @@
 <script lang="ts">
-    import Footer from "$lib/components/Footer.svelte";
-    import Header from "$lib/components/Header.svelte";
     import "/src/style/main.scss";
+    import { Footer, Header, Window, GridPattern } from '$lib/components';
+    import { AboutWindow, SidWindow, ProjectsWindow } from '$lib/components/windows';
     import { appMetadata } from '../stores/metadataStore';
+    import { windowController } from "../controller/windowController.svelte.js";
+    import {WindowEntry, windowManager } from "../stores/windowStore.svelte";
+
+    import { Info, TriangleAlert, Lightbulb } from "lucide-svelte";
+
+
     import {onMount} from "svelte";
-    import Window from "$lib/components/Window.svelte";
-    import {windowController} from "../controller/windowController.svelte.js";
-    import AboutWindow from "$lib/components/windows/AboutWindow.svelte";
-    import GridPattern from "$lib/components/GridPattern.svelte";
-    import {cn} from "$lib/util";
-    import SidWindow from "$lib/components/windows/SidWindow.svelte";
-    import { WindowEntry, windowStore} from "../stores/windowStore.svelte";
-    import { Info } from "lucide-svelte";
-    import { TriangleAlert } from "lucide-svelte";
-    import { scale } from 'svelte/transition'
-    import {elasticOut} from "svelte/easing";
-    import {cubicBezier} from "popmotion";
 
     let header: HTMLElement;
     let footer: HTMLElement;
@@ -52,51 +46,45 @@
     });
 
     const windows: Map<string, WindowEntry> = new Map();
-    windows.set('About', new WindowEntry(
+    windowManager.addWindow(new WindowEntry(
+        "About",
         AboutWindow,
         false,
         true,
         Info
     ));
-    windows.set('WARNING', new WindowEntry(
-        AboutWindow,
+    windowManager.addWindow(new WindowEntry(
+        "WARNING",
+        SidWindow,
         false,
         true,
         TriangleAlert
     ));
-    windowStore.set(windows);
+    windowManager.addWindow(new WindowEntry(
+        "Projects",
+        ProjectsWindow,
+        false,
+        true,
+        Lightbulb
+    ));
 
 </script>
 
 <Header bind:ref={header}></Header>
 <main>
-    {#each [...$windowStore] as [key, value]}
-        {#if value.open}
-            <Window name={key} bind:minimized={value.minimized} close={() => {
-                value.minimized = true;
-                setTimeout(() => {
-                    value.open = false;
-                }, 700);
-            }}>
-                <svelte:component this={value.component} />
+    {#each windowManager.allWindows() as window}
+        {#if window.open}
+            <Window name={window.name} bind:minimized={window.minimized}
+                bind:zIndex={window.zIndex}
+                onclick={() => windowManager.windowClicked(window)}
+                close={() => windowManager.closeWindow(window)}
+            >
+                <svelte:component this={window.component} />
             </Window>
         {/if}
     {/each}
     <GridPattern
-            squares={[
-      [4, 4],
-      [5, 1],
-      [8, 2],
-      [6, 6],
-      [10, 5],
-      [13, 3],
-      [14, 4],
-    ]}
-    className={cn(
-        "background",
-        "-z-10",
-        "fixed"
-    )}
+    className="background -z-50 fixed"
     x={0}
     y={0}
     width={50}

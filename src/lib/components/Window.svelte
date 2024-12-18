@@ -5,7 +5,7 @@
     import {onMount} from "svelte";
     import {Spring} from "svelte/motion";
     
-    let { name, children, minimized = $bindable(true), close } = $props();
+    let { name, children, minimized = $bindable(true), close, onclick, zIndex = $bindable(0) } = $props();
 
     // fullscreen stuff
     let fullscreen: boolean = $state(false);
@@ -79,16 +79,12 @@
         fullscreenModeChanged = true;
         toDefaultSize();
 
-        const unsubscribe1 = windowController.focusNotifier.subscribe(() => {
-            section.style.zIndex = '0';
-        });
-
         section.onmousedown = (e: MouseEvent) => {
+            onclick();
+
             if (windowController.altDown) {
                 e.preventDefault();
             }
-            windowController.focusNotifier.notify();
-            section.style.zIndex = '99';
 
             if (e.button === 0)
                 sectionMouseDown = true;
@@ -105,9 +101,6 @@
         }
 
         dragElement.onmousedown = (e: MouseEvent) => {
-            windowController.focusNotifier.notify();
-            section.style.zIndex = '99';
-
             initialHeaderX = e.clientX - springX.current;
             initialHeaderY = e.clientY - springY.current;
         };
@@ -183,7 +176,6 @@
         window.addEventListener('mouseup', mouseup);
 
         return () => {
-            unsubscribe1();
             unsubscribe2();
             window.removeEventListener('mouseup', mouseup);
         }
@@ -191,7 +183,7 @@
 
 </script>
 
-<section class:minimized={minimized} style:--cursor={(windowController.altDown && sectionMouseDown) ? "grab" : "default"}
+<section style:--z-index={zIndex} class:minimized={minimized} style:--cursor={(windowController.altDown && sectionMouseDown) ? "grab" : "default"}
          style:--top={`${springY.current - resizeTop.current}px`} style:--left={`${springX.current + resizeLeft.current}px`}
          style:--width={`${width + resizeRight.current - resizeLeft.current}px`} style:--height={`${height + resizeTop.current - resizeBottom.current}px`}
          bind:this={section} class="window-section drop-shadow-xl fixed flex flex-col align-top justify-start border-3 border-white dark:border-neutral-900 rounded-lg mx-4 my-2 mt-0 overflow-hidden">
@@ -240,6 +232,7 @@
     }
 
     section {
+      z-index: var(--z-index);
       transition: opacity 700ms, transform 700ms;
       transition-timing-function: cubic-bezier(0.45, -0.5, 0.5, 1);
     }

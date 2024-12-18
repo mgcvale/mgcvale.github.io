@@ -1,5 +1,6 @@
 @use 'reset.scss';
 @use 'util.scss';
+@import url('../app.css');
 
 hr {
   margin: 1rem .6rem;
@@ -33,3 +34,29 @@ html {
     display: none;
   }
 }
+
+
+article {
+  @apply px-4 text-neutral-700 dark:text-neutral-200;
+
+  h1, h2 {
+    font-family: 'Orbitron', monospace;
+  }
+
+  h1 {
+    @apply text-3xl pt-2;
+  }
+
+  h2 {
+    @apply text-2xl py-3;
+  }
+
+  h3 {
+    @apply text-xl py-2 pt-3 text-black dark:text-white;
+  }
+
+  hr {
+    border-color: var(--tw-neutral-400);
+  }
+}
+

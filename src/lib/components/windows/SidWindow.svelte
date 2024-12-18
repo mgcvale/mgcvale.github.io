@@ -5,13 +5,13 @@
 </script>
 
 
-<article class="px-4 text-neutral-700 dark:text-neutral-200">
-    <h1 class="orbitron text-3xl pt-2">&#9888 WARNING</h1>
-    <hr class="border-neutral-400 dark:border-neutral-600">
+<article>
+    <h1>&#9888 WARNING</h1>
+    <hr>
 
-    <h2 class="text-2xl py-2 text-black dark:text-white">This website is under development!</h2>
-    <h3 class="text-xl dark:text-neutral-300 text-neutral-900">It is mostly incomplete, and you will likely encounter various bugs.</h3>
-    <h3 class=" text-xl dark:text-neutral-300 text-neutral-900 pt-1">It should be ready by christmas, though!</h3>
+    <h2>This website is under development!</h2>
+    <h3>It is mostly incomplete, and you will likely encounter various bugs.</h3>
+    <h3>It should be ready by christmas, though!</h3>
 
     <CardContainer bind:isMouseEntered className="inter-var" containerClassName="">
         <CardBody

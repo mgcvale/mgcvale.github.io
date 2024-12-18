@@ -5,12 +5,12 @@
     let { ref = $bindable() } = $props();
 
     setInterval(() => {
-        var currentDate = new Date();
-        var hours: number | string = currentDate.getHours();
+        const currentDate = new Date();
+        let hours: number | string = currentDate.getHours();
         hours = hours < 10  ? `0${hours}` : hours;
-        var minutes: number | string = currentDate.getMinutes();
+        let minutes: number | string = currentDate.getMinutes();
         minutes = minutes < 10 ? `0${minutes}` : minutes;
-        var seconds: number | string = currentDate.getSeconds();
+        let seconds: number | string = currentDate.getSeconds();
         seconds = seconds < 10 ? `0${seconds}` : seconds;
 
         time = `${hours}:${minutes}:${seconds}`;

@@ -1,9 +1,7 @@
 <script lang="ts">
     import FloatingDockDesktop from "$lib/components/FloatingDockDesktop.svelte";
-    import FloatingDockMobile from "$lib/components/FloatingDockMobile.svelte";
     import type {DockItem} from "$lib/types";
     import { SwatchBook } from 'lucide-svelte';
-    import {windowStore} from "../../stores/windowStore.svelte";
 
     let { ref = $bindable() } = $props();
 
