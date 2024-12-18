@@ -5,7 +5,7 @@
     import {onMount} from "svelte";
     import {Spring} from "svelte/motion";
     
-    let { name, children } = $props();
+    let { name, children, minimized = $bindable(true) } = $props();
 
     // fullscreen stuff
     let fullscreen: boolean = $state(false);
@@ -20,7 +20,6 @@
     let resizeDirection: string = $state('');
     let sectionMouseDown: boolean = $state(false);
     let sectionRightMouseDown: boolean = $state(false);
-    let minimized: boolean = $state(false);
 
     // window dimensions and coordinates
     let height: number = $state(0);

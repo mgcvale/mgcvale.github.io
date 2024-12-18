@@ -3,6 +3,7 @@
     import FloatingDockMobile from "$lib/components/FloatingDockMobile.svelte";
     import type {DockItem} from "$lib/types";
     import { SwatchBook } from 'lucide-svelte';
+    import {windowStore} from "../../stores/windowStore";
 
     let { ref = $bindable() } = $props();
 
@@ -12,8 +13,24 @@
             href: "#",
             title: "Change theme",
             action: changeTheme,
+            dot: false,
         },
     ]
+
+    for (let i = 0; i < $windowStore.length; i++) {
+        const window = $windowStore[i];
+        items.push({
+            icon: window.icon,
+            href: '',
+            title: window.title,
+            action: () => {
+                $windowStore[i].open = true;
+                setTimeout(() => {
+                    $windowStore[i].minimized = false;
+                }, 150);
+            }
+        })
+    }
 
     function changeTheme() {
         if (document.querySelector("html")?.classList.contains("dark")) {
