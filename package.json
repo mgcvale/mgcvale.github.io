@@ -32,6 +32,7 @@
 		"clsx": "^2.1.1",
 		"gh-pages": "^6.2.0",
 		"lucide-svelte": "^0.468.0",
+		"nat-upnp": "^1.1.1",
 		"serve": "^14.2.4",
 		"tailwind-merge": "^2.5.5"
 	}

@@ -4,6 +4,7 @@
     import {windowController} from "../../service/windowController.svelte.js";
     import {onMount} from "svelte";
     import {Spring} from "svelte/motion";
+    import type { BoundingBox2D } from "svelte-motion";
     
     let { name, children, minimized = $bindable(true), close, onclick, zIndex = $bindable(0) } = $props();
 
@@ -183,6 +184,58 @@
             element.ontouchstart = onSomethingDown;
         });
 
+        altNortheastHandle.onmousedown = (e: MouseEvent) => {
+            if (e.button !== 2) {
+                return;
+            }
+            e.preventDefault();
+            if (windowController.altDown) {
+                isResizing = true;
+                resizeDirection = 'ne';
+                resizePositionX = e.offsetX - altNortheastHandle.getBoundingClientRect().width;
+                resizePositionY = e.offsetY;
+            }
+        }
+        altNorthwestHandle.onmousedown = (e: MouseEvent) => {
+            if (e.button !== 2) {
+                return;
+            }
+            e.preventDefault();
+            if (windowController.altDown) {
+                isResizing = true;
+                resizeDirection = 'nw';
+                resizePositionX = e.offsetX;
+                resizePositionY = e.offsetY;
+            }
+        }
+        
+        altSoutheastHandle.onmousedown = (e: MouseEvent) => {
+            if (e.button !== 2) {
+                return;
+            }
+            e.preventDefault();
+            if (windowController.altDown) {
+                isResizing = true;
+                resizeDirection = 'se';
+                const boundingRect: DOMRect = altSoutheastHandle.getBoundingClientRect();
+                resizePositionX = e.offsetX - boundingRect.width;
+                resizePositionY = boundingRect.height - e.offsetY;
+            }
+        }
+        altSouthwestHandle.onmousedown = (e: MouseEvent) => {
+            if (e.button !== 2) {
+                return;
+            }
+            e.preventDefault();
+            if (windowController.altDown) {
+                isResizing = true;
+                resizeDirection = 'sw';
+                resizePositionX = e.offsetX;
+                resizePositionY = altSouthwestHandle.getBoundingClientRect().height - e.offsetY;
+            }
+        }
+
+
         function mouseup(e: MouseEvent) {
             isResizing = false;
 
@@ -208,7 +261,7 @@
 
 </script>
 
-<section style:--z-index={zIndex} class:minimized={minimized} style:--cursor={(windowController.altDown && sectionMouseDown) ? "grab" : "default"}
+<section style:--z-index={zIndex} class:minimized={minimized}
          style:--top={`${springY.current - resizeTop.current}px`} style:--left={`${springX.current + resizeLeft.current}px`}
          style:--width={`${width + resizeRight.current - resizeLeft.current}px`} style:--height={`${height + resizeTop.current - resizeBottom.current}px`}
          bind:this={section} class="window-section drop-shadow-xl fixed flex flex-col align-top justify-start border-3 border-white dark:border-neutral-900 rounded-lg mx-4 my-2 mt-0 overflow-hidden">
@@ -227,6 +280,11 @@
     </div>
 
     <!-- resizing handles -->
+    <div bind:this={altNorthwestHandle} style:--display={windowController.altDown ? 'block' : 'none'} style:--cursor={windowController.altDown && sectionRightMouseDown ? 'nwse-resize' : sectionMouseDown ? 'grab' : 'default'} class="alt-handle absolute top-0 left-0 w-1/2 h-1/2 cursor-nwse-resize"></div>
+    <div bind:this={altNortheastHandle} style:--display={windowController.altDown ? 'block' : 'none'} style:--cursor={windowController.altDown && sectionRightMouseDown ? 'nesw-resize' : sectionMouseDown ? 'grab' : 'default'} class="alt-handle absolute top-0 right-0 w-1/2 h-1/2 cursor-nesw-resize"></div>
+    <div bind:this={altSouthwestHandle} style:--display={windowController.altDown ? 'block' : 'none'} style:--cursor={windowController.altDown && sectionRightMouseDown ? 'nesw-resize' : sectionMouseDown ? 'grab' : 'default'} class="alt-handle absolute bottom-0 left-0 w-1/2 h-1/2 cursor-nesw-resize"></div>
+    <div bind:this={altSoutheastHandle} style:--display={windowController.altDown ? 'block' : 'none'} style:--cursor={windowController.altDown && sectionRightMouseDown ? 'nwse-resize' : sectionMouseDown ? 'grab' : 'default'} class="alt-handle absolute bottom-0 right-0 w-1/2 h-1/2 cursor-nwse-resize"></div>
+
     <div bind:this={northHandle} class="absolute top-0 left-0 right-0 h-1 cursor-ns-resize"></div>
     <div bind:this={southHandle} class="absolute bottom-0 left-0 right-0 h-2 cursor-ns-resize"></div>
     <div bind:this={eastHandle} class="absolute right-0 top-0 bottom-0 w-2 cursor-ew-resize"></div>
@@ -236,11 +294,6 @@
     <div bind:this={northeastHandle} class="absolute top-0 right-0 w-4 h-4 cursor-nesw-resize"></div>
     <div bind:this={southwestHandle} class="absolute bottom-0 left-0 w-4 h-4 cursor-nesw-resize"></div>
     <div bind:this={southeastHandle} class="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize"></div>
-
-    <div bind:this={altNorthwestHandle} style:--display={windowController.altDown && sectionRightMouseDown ? "block" : "none"} class="alt-handle absolute top-0 left-0 w-1/2 h-1/2 cursor-nwse-resize"></div>
-    <div bind:this={altNortheastHandle} style:--display={windowController.altDown && sectionRightMouseDown ? "block" : "none"} class="alt-handle absolute top-0 right-0 w-1/2 h-1/2 cursor-nesw-resize"></div>
-    <div bind:this={altSouthwestHandle} style:--display={windowController.altDown && sectionRightMouseDown ? "block" : "none"} class="alt-handle absolute bottom-0 left-0 w-1/2 h-1/2 cursor-nesw-resize"></div>
-    <div bind:this={altSoutheastHandle} style:--display={windowController.altDown && sectionRightMouseDown ? "block" : "none"} class="alt-handle absolute bottom-0 right-0 w-1/2 h-1/2 cursor-nwse-resize"></div>
 </section>
 
 <style lang="scss">
@@ -249,11 +302,11 @@
         left: var(--left);
         height: var(--height);
         width: var(--width);
-        cursor: var(--cursor);
     }
 
     .alt-handle {
         display: var(--display);
+        cursor: var(--cursor);
     }
 
     section {
