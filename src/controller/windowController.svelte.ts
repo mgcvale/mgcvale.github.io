@@ -13,6 +13,10 @@ export class WindowControllerSvelte {
         window.addEventListener('mousemove', (e: MouseEvent) => {
             this.mouseCoords.set({x: e.clientX, y: e.clientY});
         });
+        window.addEventListener('touchmove', (e: TouchEvent) => {
+            const touch = e.touches[0]; // Get the first touch point
+            this.mouseCoords.set({ x: touch.clientX, y: touch.clientY });
+        });
         window.addEventListener('keydown', (e) => {
             if (e.key.toLowerCase() === "alt" || e.altKey) {
                 this.altDown = true;

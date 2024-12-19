@@ -75,6 +75,16 @@
         }
     }
 
+    const dragElementMousedown = (e: MouseEvent | TouchEvent) => {
+        if (e instanceof MouseEvent) {
+            initialHeaderX = e.clientX - springX.current;
+            initialHeaderY = e.clientY - springY.current;
+        } else {
+            initialHeaderX = e.touches[0].clientX - springX.current;
+            initialHeaderY = e.touches[0].clientY - springY.current;
+        }
+    }
+
     onMount(() => {
         fullscreenModeChanged = true;
         toDefaultSize();
@@ -100,10 +110,8 @@
             }
         }
 
-        dragElement.onmousedown = (e: MouseEvent) => {
-            initialHeaderX = e.clientX - springX.current;
-            initialHeaderY = e.clientY - springY.current;
-        };
+        dragElement.onmousedown = dragElementMousedown;
+        dragElement.ontouchstart = dragElementMousedown;
 
         const unsubscribe2 = windowController.mouseCoords.subscribe((newcoords: Pair) => {
             if (dragElement.matches(":active")) {
@@ -155,13 +163,24 @@
         ]
 
         resizeHandles.forEach(({ direction, element }) => {
-            element.onmousedown = (e: MouseEvent) => {
+            const onSomethingDown = (e: MouseEvent | TouchEvent) => {
                 e.preventDefault();
                 isResizing = true;
                 resizeDirection = direction;
-                resizePositionX = e.offsetX;
-                resizePositionY = e.offsetY;
-            };
+                if (e instanceof MouseEvent) {
+                    resizePositionX = e.offsetX;
+                    resizePositionY = e.offsetY;
+                } else {
+                    const touch = e.touches[0];
+                    const rect = element.getBoundingClientRect();
+
+                    resizePositionX = touch.clientX - rect.left;
+                    resizePositionY = touch.clientY - rect.top;
+                }
+            }
+
+            element.onmousedown = onSomethingDown;
+            element.ontouchstart = onSomethingDown;
         });
 
         function mouseup(e: MouseEvent) {
@@ -173,11 +192,17 @@
                 sectionRightMouseDown = false;
         }
 
+        function touchend() {
+            isResizing = false;
+        }
+
         window.addEventListener('mouseup', mouseup);
+        window.addEventListener('touchend', touchend);
 
         return () => {
             unsubscribe2();
             window.removeEventListener('mouseup', mouseup);
+            window.removeEventListener('touchend', touchend);
         }
     });
 
