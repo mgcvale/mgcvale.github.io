@@ -1,7 +1,7 @@
 <script lang="ts">
     import { Motion, useMotionValue } from "svelte-motion";
     import IconContainer from "$lib/components/IconContainer.svelte";
-    import { windowManager } from "../../stores/windowStore.svelte";
+    import { windowManager } from "../../service/windowManager.svelte.js";
 
     let { items, className } = $props();
 

@@ -1,7 +1,7 @@
 <script lang="ts">
     import {appMetadata, type Pair} from "../../stores/metadataStore";
     import { X, ChevronUp, ChevronDown } from 'lucide-svelte';
-    import {windowController} from "../../controller/windowController.svelte.js";
+    import {windowController} from "../../service/windowController.svelte.js";
     import {onMount} from "svelte";
     import {Spring} from "svelte/motion";
     

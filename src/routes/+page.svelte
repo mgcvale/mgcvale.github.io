@@ -3,13 +3,16 @@
     import { Footer, Header, Window, GridPattern } from '$lib/components';
     import { AboutWindow, SidWindow, ProjectsWindow } from '$lib/components/windows';
     import { appMetadata } from '../stores/metadataStore';
-    import { windowController } from "../controller/windowController.svelte.js";
-    import {WindowEntry, windowManager } from "../stores/windowStore.svelte";
+    import { windowController } from "../service/windowController.svelte.js";
+    import {WindowEntry, windowManager } from "../service/windowManager.svelte.js";
 
     import { Info, TriangleAlert, Lightbulb } from "lucide-svelte";
 
 
     import {onMount} from "svelte";
+    import Modal from "$lib/components/Modal.svelte";
+    import {modalStore} from "../stores/modalStore";
+    import TouchscreenWarningModal from "$lib/components/TouchscreenWarningModal.svelte";
 
     let header: HTMLElement;
     let footer: HTMLElement;
@@ -40,9 +43,16 @@
         window.addEventListener("resize", onresize);
         onresize();
 
+        // check for touchscreens, and display a warning in case
+        if(window.matchMedia("(pointer: coarse)").matches && localStorage.getItem('dontWarnTouchscreen') === null) {
+            // touchscreen
+            modalStore.set(TouchscreenWarningModal);
+        }
+
         return () => {
             window.removeEventListener("resize", onresize);
         }
+
     });
 
     const windows: Map<string, WindowEntry> = new Map();
@@ -91,5 +101,6 @@
     height={40}
     fillColor="rgb(156 163 175 / 0.3)"
     />
+    <Modal />
 </main>
 <Footer bind:ref={footer}></Footer>
