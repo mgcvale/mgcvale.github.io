@@ -21,6 +21,7 @@
     let resizeDirection: string = $state('');
     let sectionMouseDown: boolean = $state(false);
     let sectionRightMouseDown: boolean = $state(false);
+    let dragElementTouchDown = false;
 
     // window dimensions and coordinates
     let height: number = $state(0);
@@ -83,6 +84,7 @@
         } else {
             initialHeaderX = e.touches[0].clientX - springX.current;
             initialHeaderY = e.touches[0].clientY - springY.current;
+            dragElementTouchDown = true;
         }
     }
 
@@ -115,7 +117,7 @@
         dragElement.ontouchstart = dragElementMousedown;
 
         const unsubscribe2 = windowController.mouseCoords.subscribe((newcoords: Pair) => {
-            if (dragElement.matches(":active")) {
+            if (dragElement.matches(":active") || dragElementTouchDown) {
                 springY.target = newcoords.y - initialHeaderY;
                 springX.target = newcoords.x - initialHeaderX;
             } else if (windowController.altDown) {
@@ -247,6 +249,7 @@
 
         function touchend() {
             isResizing = false;
+            dragElementTouchDown = false;
         }
 
         window.addEventListener('mouseup', mouseup);
