@@ -2,6 +2,7 @@
 @use 'util.scss';
 @import url('../app.css');
 
+
 hr {
   margin: 1rem .6rem;
 }
@@ -37,7 +38,8 @@ html {
 
 
 article, .modal-content {
-  @apply px-4 text-neutral-700 dark:text-neutral-200;
+  padding: clamp(0px, 3%, 1rem);
+  @apply text-neutral-700 dark:text-neutral-200;
 
   h1, h2 {
     font-family: 'Orbitron', monospace;

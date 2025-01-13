@@ -4,7 +4,6 @@
     import {windowController} from "../../service/windowController.svelte.js";
     import {onMount} from "svelte";
     import {Spring} from "svelte/motion";
-    import type { BoundingBox2D } from "svelte-motion";
     
     let { name, children, minimized = $bindable(true), close, onclick, zIndex = $bindable(0) } = $props();
 
@@ -70,10 +69,10 @@
             resizeRight.target = 0;
             resizeLeft.target = 0;
             resizeBottom.target = 0;
-            springY.target = $appMetadata.fullscreenSize.y * 0.25;
+            springY.target = $appMetadata.fullscreenSize.y * 0.2;
             springX.target = $appMetadata.fullscreenSize.x * 0.25;
             width = $appMetadata.fullscreenSize.x * 0.5;
-            height = $appMetadata.fullscreenSize.y * 0.5;
+            height = $appMetadata.fullscreenSize.y * 0.6;
         }
     }
 
@@ -278,7 +277,7 @@
             <X  onclick={() => close()} class="hover:scale-125 transition-all active:scale-100" size={16}/>
         </div>
     </header>
-    <div class="window-content disable-scroll-effectsz flex-grow bg-neutral-200 dark:bg-neutral-700 p-2 overflow-x-scroll">
+    <div class="window-content disable-scroll-effectsz flex-grow bg-neutral-200 dark:bg-neutral-800 overflow-x-scroll">
         {@render children()}
     </div>
 
@@ -301,7 +300,7 @@
 
 <style lang="scss">
     .window-section {
-        top: var(--top);
+        top: var(--top); so
         left: var(--left);
         height: var(--height);
         width: var(--width);

@@ -58,6 +58,12 @@ class WindowManager {
         window.minimized = true;
         setTimeout(() => {
             window.open = false;
+
+            this.windowList.forEach((w: WindowEntry) => {
+                if (w.zIndex > window.zIndex) {
+                    w.zIndex--;
+                }
+            });
         }, 700);
     }
 
