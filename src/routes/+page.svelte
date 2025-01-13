@@ -65,13 +65,6 @@
         Info
     ));
     windowManager.addWindow(new WindowEntry(
-        "WARNING",
-        SidWindow,
-        false,
-        true,
-        TriangleAlert
-    ));
-    windowManager.addWindow(new WindowEntry(
         "Projects",
         ProjectsWindow,
         false,

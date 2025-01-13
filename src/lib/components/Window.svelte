@@ -300,7 +300,7 @@
 
 <style lang="scss">
     .window-section {
-        top: var(--top); so
+        top: var(--top);
         left: var(--left);
         height: var(--height);
         width: var(--width);
