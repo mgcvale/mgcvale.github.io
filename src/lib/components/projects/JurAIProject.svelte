@@ -30,8 +30,38 @@
     </ul>
 
     <h2 class="mt-4">Our Stack</h2>
-    
+    <h3 class="!text-2xl">Clients</h3>
+    <p>Our project has unique clients for the 3 main platforms (mobile, desktop and web).</p>
+    <ul class="mt-4 flex flex-col gap-1 ml-4">
+        <li>
+            <h3 class="inline !text-xl">Desktop:</h3> <p class="inline">Developed using Java's JavaFX Framework, avaliable for all major desktop platforms (MacOS, Windows, Linux and BSD).</p>
+            <a href="https://jurai-git.github.io" target="_blank" class="text-sky-700 dark:text-sky-300 hover:underline" >Screenshots</a> and
+            <a href="https://github.com/jurai-git/jurai-desktop" target="_blank" class="text-sky-700 dark:text-sky-300 hover:underline">github repo</a>
+        </li>
+        <li>
+            <h3 class="inline !text-xl">Web:</h3> <p class="inline">Developed using pure HTML, CSS and Javascript.</p>
+            <a href="https://jurai-git.github.io" target="_blank" class="text-sky-700 dark:text-sky-300 hover:underline" >URL</a> and
+            <a href="https://github.com/jurai-git/jurai-git.github.io" target="_blank" class="text-sky-700 dark:text-sky-300 hover:underline">github repo</a>
+        </li>
+        <li>
+            <h3 class="inline !text-xl">Mobile:</h3> <p class="inline">Still under development using Flutter.</p>
+        </li>
+    </ul>
 
+    <h3 class="!text-2xl">Backend</h3>
+    <p>
+        Our main backend server was developed using Python's Flask framework, and utilizes other technologies such as SQLAlchemy's ORM. 
+    </p>
+    <p>We are also using a MySQL Database provided by Unicahemp, and the server runs on uWSGI inside a Docker container, in a Linux system.</p>
+
+    <h3 class="!text-2xl">AIs</h3>
+    <p>
+        The Artificial Intelligences on our services were also built using Python, with the Pytorch and TensorFlow libraries, and their models are being hosted on private Hugging Face repos.
+    </p>
+    <p>Furthermore, to obtain all the data to train the AIs, we had to mine lawsuit data on one of Brazil's cour of justice, TJMG. To do that, we used a combination of web scraping and reverse engineering to collect and process data. Some of the code used in this step is avaliable at one of our <a href="https://github.com/jurai-git/tjmg-scraper" target="_blank" class="text-sky-700 dark:text-sky-300 hover:underline">Github repos</a>, if you want to check it out!</p> 
+
+    <h2>Developing JurAI</h2>
+    <p>If you became interested in the development process of some of JurAI's components, you can check some of my blogs on it!</p>
 </div>
 
 <style lang="scss">

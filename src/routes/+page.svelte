@@ -1,7 +1,7 @@
 <script lang="ts">
     import "/src/style/main.scss";
     import { Footer, Header, Window, GridPattern } from '$lib/components';
-    import { AboutWindow, SidWindow, ProjectsWindow } from '$lib/components/windows';
+    import { AboutWindow, ProjectsWindow } from '$lib/components/windows';
     import { appMetadata } from '../stores/metadataStore';
     import { windowController } from "../service/windowController.svelte.js";
     import {WindowEntry, windowManager } from "../service/windowManager.svelte.js";
