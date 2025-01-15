@@ -95,12 +95,12 @@
         {/if}
     {/each}
     <GridPattern
-    className="background -z-50 fixed"
-    x={0}
-    y={0}
-    width={50}
-    height={40}
-    fillColor="rgb(156 163 175 / 0.3)"
+        className="background -z-50 fixed"
+        x={0}
+        y={0}
+        width={50}
+        height={40}
+        fillColor="rgb(156 163 175 / 0.3)"
     />
     <Modal />
 </main>
