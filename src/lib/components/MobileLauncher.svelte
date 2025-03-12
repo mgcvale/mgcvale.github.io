@@ -30,10 +30,10 @@
                 ontouchstart={e => onTouchStart(e)}
                 ontouchend={e => onTouchEnd(e)}
         >
-            <div class="icon-wrapper bg-neutral-200 border-2 border-neutral-300 p-2 rounded-lg text-neutral-600">
+            <div class="icon-wrapper  dark:bg-neutral-900 bg-neutral-200 border-2 border-neutral-300 dark:border-neutral-700 p-2 rounded-lg text-neutral-600 dark:text-neutral-300">
                 <svelte:component this={item.icon}></svelte:component>
             </div>
-            <p class="text-neutral-700">{item.smallTitle}</p>
+            <p class="text-neutral-700 dark:text-neutral-300">{item.smallTitle}</p>
         </a>
     {/each}
     {#each windowManager.allWindows() as window}
@@ -43,10 +43,10 @@
                 ontouchstart={e => onTouchStart(e)}
                 ontouchend={e => onTouchEnd(e)}
         >
-            <div class="icon-wrapper bg-neutral-200 border-2 border-neutral-300 p-2 rounded-lg text-neutral-600">
+            <div class="icon-wrapper  dark:bg-neutral-900 bg-neutral-200 border-2 border-neutral-300 dark:border-neutral-700 p-2 rounded-lg text-neutral-600 dark:text-neutral-300">
                 <svelte:component this={window.icon}></svelte:component>
             </div>
-            <p class="text-neutral-700">{window.smallName}</p>
+            <p class="text-neutral-700 dark:text-neutral-300">{window.smallName}</p>
         </a>
     {/each}
 </div>
