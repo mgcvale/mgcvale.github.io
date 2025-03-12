@@ -1,5 +1,5 @@
 <div>
-    <img class="logo my-4" src="./src/resources/logos/jurai-text.png" alt="JurAI Logo">
+    <img class="logo my-4" src="https://mgcvale.dev/jurai.png" alt="JurAI Logo">
 </div>
 <article class="ml-2 project-root dark:text-neutral-200">
     <h3 class="text-xl">JurAI - Simplifying Legal Processes with AI</h3>
