@@ -1,4 +1,4 @@
-<a class="logo" href="https://github.com/mgcvale/opensync-backend" target="_blank">
+<a class="logo text-black dark:text-white" href="https://github.com/mgcvale/opensync-backend" target="_blank">
     <svg xmlns="http://www.w3.org/2000/svg" width="79.2pt" height="79.2pt" viewBox="0 0 79.2 79.2">
         <defs></defs>
         <g id="group0" transform="translate(3.6, 3.6)" fill="none">
@@ -9,30 +9,37 @@
     </svg>
     <span class="work-sans">opensync</span>
 </a>
-<div class="ml-2">
+<article class="ml-2">
     <h3 class="text-xl mt-4">Opensync - Lightweight, fast and open-source self-hosted file backup system</h3>
-    <p>Out of furstration with Google Photos' shady subscription tactics and limited phone storage, the Opensync project was born. It seeks to transform unused space on home computers into a convenient solution for mobile photo and file storage.</p>
+    <p class="dark:text-neutral-300
+">Out of furstration with Google Photos' shady subscription tactics and limited phone storage, the Opensync project was born. It seeks to transform unused space on home computers into a convenient solution for mobile photo and file storage.</p>
 
     <h2 class="mt-4">What Makes It Unique?</h2>
-    <p>Today, most file backup systems are subscription-based and hosted on the cloud, with few open-source and self-hosted options available. Furthermore, the open-source solutions that do exist rarely offer automatic integration with phone photos (like Google Photos) while maintaining a streamlined feature set and performant backend.</p>
-    <p>Opensync aims to fill this gap, offering a streamlined and performant backend written in C, and a multi-platform frontend with seamless integration and bloat-free interface.</p>
+    <p class="dark:text-neutral-300
+">Today, most file backup systems are subscription-based and hosted on the cloud, with few open-source and self-hosted options available. Furthermore, the open-source solutions that do exist rarely offer automatic integration with phone photos (like Google Photos) while maintaining a streamlined feature set and performant backend.</p>
+    <p class="dark:text-neutral-300
+">Opensync aims to fill this gap, offering a streamlined and performant backend written in C, and a multi-platform frontend with seamless integration and bloat-free interface.</p>
 
     <h2 class="mt-4">How is this being done?</h2>
     <h3>The backend</h3>
-    <p>In order to this project possible, our first priority was the backend, as one of our main goals was to build something performant and streamlined that could run on any hardware.</p>
-    <p>The first obvious choice for the backend C. Since it wouldn't be too complex, scalability wouldn't be a major concern, and using C allowed us to minimize overhead.</p>
+    <p class="dark:text-neutral-300
+">In order to make this project possible, our primary focus was the backend, as one of our main goals was to build something performant and streamlined that could run on any hardware.</p>
+    <p class="dark:text-neutral-300">So C was an obvious choice for the backend. Since the system wouldn’t be overly complex, scalability wasn’t a major concern, and using C allowed us to minimize overhead.</p>
 
-    <p class="mt-2">We had two options: use an existing framework, like Mongoose or libmicrohttpd, or handle requests directly with Berkeley Sockets. We chose the latter.</p>
-    <p>At first glance, this may seem like a crazy decision, but it allowed us to do some pretty impressive things to optimize the server, such as creating custom protocols and keeping the overhead to an absolute minimum.</p>
-    <p>However, we also wanted some level of abstraction. To achieve that, we encapsulated the low-level logic of the server in a pseudo-framework, which we aptly named <a href="https://github.com/mgcvale/sculpt" class="text-sky-700 dark:text-sky-300 hover:underline" target="_blank">Sculpt</a>, managing asynchronous I/O and basic parsing logic.</p>
+    <p class="mt-2 dark:text-neutral-300">We had many options of frameworks to use (including raw sockets), but the vast majority of them were either designed for static file-serving servers (like H2o), embedded systems (like mongoose and CivetWeb), or had overly complex APIs (like libmicrohttpd). Additionally, the few frameworks that were designed for HTTP that had good APIs, didn't handle file uploads well, usually allocating the entire file on RAM before sending it to disk.</p>
+    <p class="dark:text-neutral-300">After researching and testing a lot of frameworks, I ended up with settling <a target="_blank" href="https://kore.io">Kore</a>. While it wasn't a perfect match initially, I made a few modifications to the source code and discussed my concerns with the creator, which made it work perfectly for our needs. It offers a great API, supports various extensions, and is highly performant.</p>
+    <p class="dark:text-neutral-300">If you're interested, you can check it out at my <a target="_blank" href="https://github.com/mgcvale/kore">fork</a> of it.</p>
 
     <h3>The frontend</h3>
-    <p>Unlike the backend, the frontend didn’t need to be as focused on performance and streamlining.</p>
-    <p>For that, we choose Svelte. It compiles into pure JS, CSS and HTML, and is known as one of the fastest reactive front-end JS Frameworks.</p>
-    <p>Additionally, the stack also includes SCSS and Tailwind for styling.</p>
+    <p class="dark:text-neutral-300
+">Unlike the backend, the frontend didn’t need to be as focused on performance and streamlining, but we still wanted to keep the minimalistic spirit.</p>
+    <p class="dark:text-neutral-300
+">For that, we choose Svelte. It compiles into pure JS, CSS and HTML, and is known as one of the fastest reactive front-end JS Frameworks, so we decided that it fit our project well.</p>
+    <p class="dark:text-neutral-300
+">Additionally, the stack also includes SCSS and Tailwind for styling.</p>
 
-    <p class="mt-4">Here are its Github repos: <a href="https://github.com/mgcvale/opensync-backend" class="text-sky-700 dark:text-sky-300 hover:underline" target="_blank">Bakcend</a>, <a href="https://github.com/mgcvale/opensync-website" class="text-sky-700 dark:text-sky-300 hover:underline" target="_blank">Website</a>.</p>
-</div>
+    <p class="mt-4 dark:text-neutral-300">Here are its Github repos: <a href="https://github.com/mgcvale/opensync-backend" class="text-sky-700 dark:text-sky-300 hover:underline" target="_blank">Bakcend</a>, <a href="https://github.com/mgcvale/opensync-website" class="text-sky-700 dark:text-sky-300 hover:underline" target="_blank">Website</a>.</p>
+</article>
 
 <style lang="scss">
     .logo {
@@ -57,10 +64,18 @@
         }
     }
 
-    div p {
+
+    article {
+      margin-top: 0;
+      padding-top: 0;
+      margin-left: 0;
+      padding-left: 0;
+
+      p {
         font-family: "Manrope", "Exo 2", sans-serif;
         font-weight: 500;
-        @apply text-neutral-900;
+        @apply text-neutral-700;
+      }
     }
 
 </style>

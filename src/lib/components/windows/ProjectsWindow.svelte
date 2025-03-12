@@ -4,11 +4,12 @@
     import JurAIProject from "../projects/JurAIProject.svelte";
     import OpensyncProject from "../projects/OpensyncProject.svelte";
     import PortifolioProject from "../projects/PortifolioProject.svelte";
-    import SketchoProject from "../projects/SketchoProject.svelte";
+    import YamiProject from "../projects/YamiProject.svelte";
     import type { Component } from 'svelte';
     import { fly, fade } from 'svelte/transition';
     import { expoInOut, expoIn, expoOut } from 'svelte/easing';
     import { ChevronLeft } from "lucide-svelte";
+    import SculptProject from "$lib/components/projects/SculptProject.svelte";
 
     let isProjectOpen: boolean = $state(false);
     let isListOpen: boolean = $state(true);
@@ -17,7 +18,8 @@
     const projects = [
         new ProjectEntry("JurAI", "AI-Powered jurisprudence helper", "2023-2025", JurAIProject),
         new ProjectEntry("Opensync", "Self-hosted cloud solutions", "2024-2025", OpensyncProject),
-        new ProjectEntry("Sketcho", "Open-source drawing game", "2025", SketchoProject),
+        new ProjectEntry("Sculpt", "HTTP Framework written in C", "2024-2025", SculptProject),
+        new ProjectEntry("Yami", "Social media for food critics", "2025", YamiProject),
         new ProjectEntry("Portifolio", "This portifolio you're seeing", "2024", PortifolioProject),
         new ProjectEntry("CotilMaps", "Internal college mapping", "2023", CotilMapsProject),
     ];
@@ -44,7 +46,7 @@
         </h1>
         {/if}
         <div class="min-h-full my-20 flex flex-col justify-center align-middle px-4 project-list">
-            {#each currentProjects as project: ProjectEntry, index}
+            {#each currentProjects as project, index}
                 <button onclick={() => {
                         setTimeout(() => {
                             isListOpen = false;

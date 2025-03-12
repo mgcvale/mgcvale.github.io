@@ -10,6 +10,7 @@
 
 </script>
 
+<!-- svelte-ignore svelte_component_deprecated -->
 {#if showing}
     <div transition:fade={{duration: 300}} class="fixed top-0 left-0 modal-container w-screen h-screen bg-black bg-opacity-25 backdrop-blur-sm flex justify-center">
         <div transition:scale={{duration: 300, opacity: 0}} class="modal m-auto max-h-fit bg-neutral-300 dark:bg-neutral-700 border-2 border-neutral-100 dark:border-neutral-800 rounded-lg p-2">

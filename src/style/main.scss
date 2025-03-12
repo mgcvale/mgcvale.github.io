@@ -60,6 +60,10 @@ article, .modal-content {
   hr {
     border-color: var(--tw-neutral-400);
   }
+
+  a {
+    @apply text-blue-400;
+  }
 }
 
 .modal-content {
