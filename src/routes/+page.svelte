@@ -6,7 +6,7 @@
     import { windowController } from "../service/windowController.svelte.js";
     import {WindowEntry, windowManager } from "../service/windowManager.svelte.js";
 
-    import {Info, TriangleAlert, Lightbulb, GlobeIcon} from "lucide-svelte";
+    import {Info, TriangleAlert, Lightbulb, GlobeIcon, NotebookPen} from "lucide-svelte";
 
 
     import {onMount} from "svelte";
@@ -14,6 +14,7 @@
     import {modalStore} from "../stores/modalStore";
     import TouchscreenWarningModal from "$lib/components/TouchscreenWarningModal.svelte";
     import BrowserWindow from "$lib/components/windows/BrowserWindow.svelte";
+    import BlogsWindow from "$lib/components/windows/ArticlesWindow.svelte";
 
     let header: HTMLElement;
     let footer: HTMLElement;
@@ -77,6 +78,13 @@
         false,
         true,
         GlobeIcon
+    ));
+    windowManager.addWindow(new WindowEntry(
+        "Articles",
+        BlogsWindow,
+        false,
+        true,
+        NotebookPen
     ));
 
 </script>

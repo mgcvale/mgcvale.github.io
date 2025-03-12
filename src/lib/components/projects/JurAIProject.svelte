@@ -64,7 +64,7 @@
     <p class="dark:text-neutral-200">Furthermore, to obtain all the data to train the AIs, we had to mine lawsuit data on one of Brazil's courts of justice, TJMG. To do that, we used a combination of web scraping and reverse engineering to collect and process data. Some of the code used in this step is avaliable at one of our <a href="https://github.com/jurai-git/tjmg-scraper" target="_blank" class="text-sky-700 dark:text-sky-300 hover:underline">Github repos</a>, if you want to check it out!</p>
 
     <h2>Developing JurAI</h2>
-    <p class="dark:text-neutral-200">If you became interested in the development process of some of JurAI's components, you can check some of my blogs on it!</p>
+    <p class="dark:text-neutral-200">If you became interested in the development process of some of JurAI's components, you can check some of my articles on it!</p>
 </article>
 
 <style lang="scss">
