@@ -4,6 +4,7 @@
     import {windowController} from "../../service/windowController.svelte.js";
     import {onMount} from "svelte";
     import {Spring} from "svelte/motion";
+    import {applicationState} from "../../stores/applicationStore";
     
     let { name, children, minimized = $bindable(true), close, onclick, zIndex = $bindable(0) } = $props();
 
@@ -65,6 +66,7 @@
 
     function toDefaultSize() {
         if (fullscreenModeChanged) {
+            if ($applicationState.isTouchscreen) fullscreen = true;
             resizeTop.target = 0;
             resizeRight.target = 0;
             resizeLeft.target = 0;
@@ -289,13 +291,13 @@
 
     <div bind:this={northHandle} class="absolute top-0 left-0 right-0 h-1 cursor-ns-resize"></div>
     <div bind:this={southHandle} class="absolute bottom-0 left-0 right-0 h-2 cursor-ns-resize"></div>
-    <div bind:this={eastHandle} class="absolute right-0 top-0 bottom-0 w-2 cursor-ew-resize"></div>
-    <div bind:this={westHandle} class="absolute left-0 top-0 bottom-0 w-2 cursor-ew-resize"></div>
+    <div bind:this={eastHandle} class="absolute -right-1.5 top-0 bottom-0 w-3 cursor-ew-resize"></div>
+    <div bind:this={westHandle} class="absolute -left-1.5 top-0 bottom-0 w-3 cursor-ew-resize"></div>
 
-    <div bind:this={northwestHandle} class="absolute top-0 left-0 w-4 h-4 cursor-nwse-resize"></div>
-    <div bind:this={northeastHandle} class="absolute top-0 right-0 w-4 h-4 cursor-nesw-resize"></div>
-    <div bind:this={southwestHandle} class="absolute bottom-0 left-0 w-4 h-4 cursor-nesw-resize"></div>
-    <div bind:this={southeastHandle} class="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize"></div>
+    <div bind:this={northwestHandle} class="absolute -top-1 -left-1 w-4 h-4 cursor-nwse-resize"></div>
+    <div bind:this={northeastHandle} class="absolute -top-2 -right-2 w-4 h-4 cursor-nesw-resize"></div>
+    <div bind:this={southwestHandle} class="absolute -bottom-1 -left-1 w-4 h-4 cursor-nesw-resize"></div>
+    <div bind:this={southeastHandle} class="absolute -bottom-1 -right-1 w-4 h-4 cursor-nwse-resize"></div>
 </section>
 
 <style lang="scss">

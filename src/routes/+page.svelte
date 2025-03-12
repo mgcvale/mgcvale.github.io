@@ -15,6 +15,7 @@
     import TouchscreenWarningModal from "$lib/components/TouchscreenWarningModal.svelte";
     import BrowserWindow from "$lib/components/windows/BrowserWindow.svelte";
     import BlogsWindow from "$lib/components/windows/ArticlesWindow.svelte";
+    import {applicationState} from "../stores/applicationStore";
 
     let header: HTMLElement;
     let footer: HTMLElement;
@@ -46,9 +47,14 @@
         onresize();
 
         // check for touchscreens, and display a warning in case
-        if(window.matchMedia("(pointer: coarse)").matches && localStorage.getItem('dontWarnTouchscreen') === null) {
-            // touchscreen
-            modalStore.set(TouchscreenWarningModal);
+        if (window.matchMedia("(pointer: coarse)").matches) {
+            applicationState.update(state => ({
+                ...state,
+                isTouchscreen: true,
+            }));
+            if (localStorage.getItem("dontWarnTouchscreen") === null) {
+                modalStore.set(TouchscreenWarningModal);
+            }
         }
 
         return () => {
@@ -60,12 +66,14 @@
     const windows: Map<string, WindowEntry> = new Map();
     windowManager.addWindow(new WindowEntry(
         "About",
+        "About",
         AboutWindow,
         false,
         true,
         Info
     ));
     windowManager.addWindow(new WindowEntry(
+        "Projects",
         "Projects",
         ProjectsWindow,
         false,
@@ -74,12 +82,14 @@
     ));
     windowManager.addWindow(new WindowEntry(
         "Web Browser",
+        "Browser",
         BrowserWindow,
         false,
         true,
         GlobeIcon
     ));
     windowManager.addWindow(new WindowEntry(
+        "Articles",
         "Articles",
         BlogsWindow,
         false,

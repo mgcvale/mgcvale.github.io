@@ -7,14 +7,16 @@ export class WindowEntry {
     icon: any;
     zIndex = $state(0);
     name: string;
+    smallName: string
     action: () => void;
 
-    constructor(name: string, component: Component, open: boolean, minimized: boolean, icon: any) {
+    constructor(name: string, smallName: string, component: Component, open: boolean, minimized: boolean, icon: any) {
         this.component = component;
         this.minimized = minimized;
         this.icon = icon;
         this.open = open;
         this.name = name;
+        this.smallName = smallName;
 
         this.action = () => {
             if (!this.open) {
