@@ -54,7 +54,11 @@ article, .modal-content {
   }
 
   h3 {
-    @apply text-xl py-2 pt-3 text-black dark:text-white;
+    @apply text-2xl py-2 pt-5 text-black dark:text-white;
+  }
+
+  h4 {
+    @apply text-xl py-1.5 pt-3 text-black dark:text-white;
   }
 
   hr {

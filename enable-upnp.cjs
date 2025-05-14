@@ -1,7 +1,7 @@
 const upnp = require('nat-upnp');
 const client = upnp.createClient();
 
-const PORT = 8000
+const PORT = 5000
 
 client.portMapping(
   {

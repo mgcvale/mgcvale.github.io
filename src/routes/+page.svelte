@@ -6,7 +6,7 @@
     import { windowController } from "../service/windowController.svelte.js";
     import {WindowEntry, windowManager } from "../service/windowManager.svelte.js";
 
-    import {Info, TriangleAlert, Lightbulb, GlobeIcon, NotebookPen} from "lucide-svelte";
+    import {Info, Lightbulb, GlobeIcon, NotebookPen} from "lucide-svelte";
 
 
     import {onMount} from "svelte";
@@ -63,7 +63,6 @@
 
     });
 
-    const windows: Map<string, WindowEntry> = new Map();
     windowManager.addWindow(new WindowEntry(
         "About",
         "About",

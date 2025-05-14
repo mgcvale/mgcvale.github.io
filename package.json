@@ -31,6 +31,7 @@
 		"@sveltejs/adapter-static": "^3.0.6",
 		"clsx": "^2.1.1",
 		"gh-pages": "^6.2.0",
+		"highlight.js": "^11.11.1",
 		"lucide-svelte": "^0.468.0",
 		"nat-upnp": "^1.1.1",
 		"serve": "^14.2.4",
