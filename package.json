@@ -6,7 +6,7 @@
 	"scripts": {
 		"deploy": "gh-pages -d build -b gh-pages --no-history",
 		"dev": "vite dev",
-		"build": "vite build",
+		"build": "vite build; cp .github/workflows/static.yml build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
