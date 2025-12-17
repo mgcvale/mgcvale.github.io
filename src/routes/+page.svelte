@@ -1,32 +1,32 @@
 <script lang="ts">
     import "/src/style/main.scss";
     import { Footer, Header, Window, GridPattern } from '$lib/components';
-    import { AboutWindow, ProjectsWindow } from '$lib/components/windows';
     import { appMetadata } from '../stores/metadataStore';
     import { windowController } from "../service/windowController.svelte.js";
-    import {WindowEntry, windowManager } from "../service/windowManager.svelte.js";
-
-    import {Info, Lightbulb, GlobeIcon, NotebookPen} from "lucide-svelte";
+    import { windowManager } from "../service/windowManager.svelte.js";
 
 
     import {onMount} from "svelte";
     import Modal from "$lib/components/Modal.svelte";
     import {modalStore} from "../stores/modalStore";
     import TouchscreenWarningModal from "$lib/components/TouchscreenWarningModal.svelte";
-    import BrowserWindow from "$lib/components/windows/BrowserWindow.svelte";
-    import BlogsWindow from "$lib/components/windows/ArticlesWindow.svelte";
-    import {applicationState} from "../stores/applicationStore";
+    import { applicationState} from "../stores/applicationStore";
+    import Snackbar from "$lib/components/Snackbar.svelte";
+    import { snackbarStore } from "../stores/snackbarStore";
+    import NotificationSnackbar from "$lib/components/NotificationSnackbar.svelte";
+    import { englishWindows, windowNames } from "../util/windows";
 
-    let header: HTMLElement;
-    let footer: HTMLElement;
+    let header: HTMLElement | undefined = $state();
+    let footer: HTMLElement | undefined = $state();
+    let oldAppLang = $applicationState.language;
 
     onMount(() => {
         windowController.initialize(window);
 
         const onresize = () => {
-            if (!header || !footer) {
-                  console.error("Error calculating fullscreen size");
-                  return;
+            if (header === undefined || footer == undefined) {
+                console.error("Error calculating fullscreen size");
+                return;
             }
 
             const headerStyle = window.getComputedStyle(header);
@@ -35,11 +35,11 @@
             appMetadata.update((metadata) => ({
                 fullscreenCoords: {
                     x: 0,
-                    y: header.offsetHeight + headerMargin
+                    y: header!.offsetHeight + headerMargin
                 },
                 fullscreenSize: {
                     x: window.innerWidth,
-                    y: window.innerHeight - header.offsetHeight - headerMargin
+                    y: window.innerHeight - header!.offsetHeight - headerMargin
                 }
             }));
         }
@@ -63,51 +63,65 @@
 
     });
 
-    windowManager.addWindow(new WindowEntry(
-        "About",
-        "About",
-        AboutWindow,
-        false,
-        true,
-        Info
-    ));
-    windowManager.addWindow(new WindowEntry(
-        "Projects",
-        "Projects",
-        ProjectsWindow,
-        false,
-        true,
-        Lightbulb
-    ));
-    windowManager.addWindow(new WindowEntry(
-        "Web Browser",
-        "Browser",
-        BrowserWindow,
-        false,
-        true,
-        GlobeIcon
-    ));
-    windowManager.addWindow(new WindowEntry(
-        "Articles",
-        "Articles",
-        BlogsWindow,
-        false,
-        true,
-        NotebookPen
-    ));
+    applicationState.subscribe(newState => {
+        if (newState.language === oldAppLang) return;
+        oldAppLang = newState.language;
+
+        if (oldAppLang === "english") {
+            snackbarStore.set({
+                component: NotificationSnackbar,
+                props: {
+                    notif: "Language set to english",
+                }
+            });
+            setEnglish();
+        } else {
+            snackbarStore.set({
+                component: NotificationSnackbar,
+                props: {
+                    notif: "Idioma mudado para português",
+                }
+            });
+            setPortuguese();
+        }
+    });
+
+    function setPortuguese() {
+        windowManager.updateAllWindows(window => {
+            window.name = windowNames[window.id as keyof typeof windowNames].portuguese.name;
+            window.smallName = windowNames[window.id as keyof typeof windowNames].portuguese.smallName;
+            return window;
+        });
+    }
+
+    function setEnglish() {
+        windowManager.updateAllWindows(window => {
+            window.name = windowNames[window.id as keyof typeof windowNames].english.name;
+            window.smallName = windowNames[window.id as keyof typeof windowNames].english.smallName;
+            return window;
+        });
+    }
+
+    englishWindows.forEach(w => windowManager.addWindow(w));
+    if ($applicationState.language === "portuguese") {
+        setPortuguese();
+    }
+
+    console.log(windowManager.getWindowlist());
+    console.log(windowManager.getWindowlist().length);
 
 </script>
 
 <Header bind:ref={header}></Header>
 <main>
-    {#each windowManager.allWindows() as window}
+    {#each windowManager.getWindowlist() as window}
         {#if window.open}
             <Window name={window.name} bind:minimized={window.minimized}
                 bind:zIndex={window.zIndex}
                 onclick={() => windowManager.windowClicked(window)}
                 close={() => windowManager.closeWindow(window)}
             >
-                <svelte:component this={window.component} />
+                <window.component/>
             </Window>
         {/if}
     {/each}
@@ -120,5 +134,6 @@
         fillColor="rgb(156 163 175 / 0.3)"
     />
     <Modal />
+    <Snackbar />
 </main>
 <Footer bind:ref={footer}></Footer>

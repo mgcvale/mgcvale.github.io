@@ -6,17 +6,19 @@ export class WindowEntry {
     minimized = $state(true);
     icon: any;
     zIndex = $state(0);
-    name: string;
-    smallName: string
+    name: string = $state("");
+    smallName: string = $state("");
     action: () => void;
+    id: number;
 
-    constructor(name: string, smallName: string, component: Component, open: boolean, minimized: boolean, icon: any) {
+    constructor(id: number, name: string, smallName: string, component: Component, open: boolean, minimized: boolean, icon: any) {
         this.component = component;
         this.minimized = minimized;
         this.icon = icon;
         this.open = open;
         this.name = name;
         this.smallName = smallName;
+        this.id = id;
 
         this.action = () => {
             if (!this.open) {
@@ -76,8 +78,14 @@ class WindowManager {
         }
     }
 
-    public allWindows(): WindowEntry[] {
+    public getWindowlist(): WindowEntry[] {
         return this.windowList;
+    }
+
+    public updateAllWindows(updater: (window: WindowEntry) => WindowEntry) {
+        for (let i = 0; i < this.windowList.length; i++) {
+            this.windowList[i] = updater(this.windowList[i]);
+        }
     }
 
     public windowClicked(window: WindowEntry): void {

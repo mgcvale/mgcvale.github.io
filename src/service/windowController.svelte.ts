@@ -14,7 +14,7 @@ export class WindowControllerSvelte {
             this.mouseCoords.set({x: e.clientX, y: e.clientY});
         });
         window.addEventListener('touchmove', (e: TouchEvent) => {
-            const touch = e.touches[0]; // Get the first touch point
+            const touch = e.touches[0];
             this.mouseCoords.set({ x: touch.clientX, y: touch.clientY });
         });
         window.addEventListener('keydown', (e) => {

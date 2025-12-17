@@ -3,7 +3,7 @@
     import IconContainer from "$lib/components/IconContainer.svelte";
     import { windowManager } from "../../service/windowManager.svelte.js";
 
-    let { items, className } = $props();
+    let { items = $bindable(), className } = $props();
 
     const mouseX = useMotionValue(Infinity);
     const containerX = useMotionValue(0);
@@ -26,10 +26,10 @@
     }}
     class="mx-auto flex h-16 gap-4 items-end rounded-full bg-gray-100 dark:bg-neutral-900 px-4 pb-3 border-2 border-gray-200 dark:border-gray-600 drop-shadow-sm {className}"
 >
-    {#each items as item (item.title)}
+    {#each items as item (item.id)}
         <IconContainer {mouseX} {containerX} {...item}/>
     {/each}
-    {#each windowManager.allWindows() as window}
+    {#each windowManager.getWindowlist() as window}
         <IconContainer {mouseX} {containerX}
             title={window.name}
             href=""

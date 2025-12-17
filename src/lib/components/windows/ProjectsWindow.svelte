@@ -10,20 +10,22 @@
     import { expoInOut, expoIn, expoOut } from 'svelte/easing';
     import { ChevronLeft } from "lucide-svelte";
     import SculptProject from "$lib/components/projects/SculptProject.svelte";
+    import { applicationState } from "../../../stores/applicationStore";
 
     let isProjectOpen: boolean = $state(false);
     let isListOpen: boolean = $state(true);
     let currentProject: null | Component = $state(null);
 
     const projects = [
-        new ProjectEntry("JurAI", "AI-Powered jurisprudence helper", "2023-2025", JurAIProject),
-        new ProjectEntry("Opensync", "Self-hosted cloud solutions", "2024-2025", OpensyncProject),
-        new ProjectEntry("Sculpt", "HTTP Framework written in C", "2024-2025", SculptProject),
-        new ProjectEntry("Yami", "Social media for food critics", "2025", YamiProject),
-        new ProjectEntry("Portifolio", "This portifolio you're seeing", "2024", PortifolioProject),
-        new ProjectEntry("CotilMaps", "Internal college mapping", "2023", CotilMapsProject),
+        new ProjectEntry(0, "JurAI", "AI-Powered jurisprudence helper", "JurAI", "Auxiliador de Jurisptrudência por IA", "2023-2025", JurAIProject),
+        new ProjectEntry(1, "Opensync", "Self-hosted cloud solutions", "Opensync", "Soluções na nuvem auto-hospedadas", "2024-2026", OpensyncProject),
+        new ProjectEntry(2, "Sculpt", "HTTP Framework written in C", "Sculpt", "Framework HTTP escrita em C", "2024-2025", SculptProject),
+        new ProjectEntry(3, "Yami", "Social media for food critics", "Yami", "Rede social para críticos culinários", "2025-2026", YamiProject),
+        new ProjectEntry(4, "Portifolio", "This portifolio you're seeing", "Portifólio", "Esse site que você está vendo", "2024", PortifolioProject),
+        new ProjectEntry(5, "CotilMaps", "Internal college mapping", "CotilMaps", "Mapeamento interno do COTIL", "2023", CotilMapsProject),
     ];
     let currentProjects: ProjectEntry[] = $state(projects);
+
 
     // When making a showing/hiding animation, you need to wait for the animation to complete before hdiing the component.
     // This is why I'm using setTimeouts() on the code below. However, we almost never need to wait the full time of the animation - we can anticipate it some
@@ -46,7 +48,7 @@
         </h1>
         {/if}
         <div class="min-h-full my-20 flex flex-col justify-center align-middle px-4 project-list">
-            {#each currentProjects as project, index}
+            {#each currentProjects as project, index (project.id)}
                 <button onclick={() => {
                         setTimeout(() => {
                             isListOpen = false;
@@ -58,8 +60,8 @@
                     out:fly={{ y: 50, duration: PROJECT_LIST_TRANSITION_DURATION, delay: (projects.length - index - 1) * PROJECT_LIST_TRANSITION_DELAY, easing: expoInOut}}
                     in:fly={{y: 50, duration: PROJECT_LIST_TRANSITION_DURATION, delay: index * PROJECT_LIST_TRANSITION_DELAY, easing: expoInOut}}
                 >
-                    <span class="title">{project.name}</span>
-                    <span class="description">{project.description}</span>
+                    <span class="title">{$applicationState.language === "english" ? project.englishName : project.portugueseName}</span>
+                    <span class="description">{$applicationState.language === "english" ? project.englishDescription : project.portugueseDescription}</span>
                     <div class="line-separator"></div>
                     <div class="manrope">{project.years}</div>
                 </button>

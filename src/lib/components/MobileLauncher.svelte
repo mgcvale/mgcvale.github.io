@@ -1,7 +1,7 @@
 <script lang="ts">
     import {windowManager} from "../../service/windowManager.svelte";
 
-    let { items } = $props();
+    let { items = $bindable() } = $props();
 
     function onTouchStart(event: Event) {
         const target = event.currentTarget as HTMLElement;
@@ -22,7 +22,7 @@
 <!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="hidden scaled"></div>
 <div class="grid-container">
-    {#each items as item, idx}
+    {#each items as item}
         <a
                 class="grid-item active:scale-100"
                 onclick={item.action}
@@ -42,6 +42,7 @@
                 onclick={window.action}
                 ontouchstart={e => onTouchStart(e)}
                 ontouchend={e => onTouchEnd(e)}
+                role="button"
         >
             <div class="icon-wrapper  dark:bg-neutral-900 bg-neutral-200 border-2 border-neutral-300 dark:border-neutral-700 p-2 rounded-lg text-neutral-600 dark:text-neutral-300">
                 <svelte:component this={window.icon}></svelte:component>
