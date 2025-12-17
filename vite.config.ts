@@ -5,6 +5,7 @@ import autoprefixer from 'autoprefixer';
 
 
 export default defineConfig({
+	base: '/',
 	plugins: [sveltekit()],
 	css: {
 		postcss: {
@@ -12,7 +13,7 @@ export default defineConfig({
 		},
 	},
 	build: {
-		outDir: 'public_html',
+		outDir: 'build',
 	},
 	server: {
 		host: '0.0.0.0',
