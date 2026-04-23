@@ -153,8 +153,8 @@ void root_handler_http_socket(int fd, sc_http_msg msg, sc_headers *headers, void
     let currentCode1 = $derived($applicationState.language === 'english' ? code1English : code1Portuguese);
     let currentCode2 = $derived($applicationState.language === 'english' ? code2English : code2Portuguese);
     
-    let codeBlock1: HTMLElement = $state(null);
-    let codeBlock2: HTMLElement = $state(null);
+    let codeBlock1: HTMLElement | null = $state(null);
+    let codeBlock2: HTMLElement | null = $state(null);
 
     
 
@@ -208,7 +208,7 @@ void root_handler_http_socket(int fd, sc_http_msg msg, sc_headers *headers, void
     
     <p class="pb-2">Here's the code for a basic hello world program in Sculpt:</p>
     
-    <div class="bg-gray-100 dark:bg-gray800 rounded-md overflow-hidden shadow-sm">
+    <div class="bg-gray-100 dark:bg-gray-800 rounded-md overflow-hidden shadow-sm">
       <div class="flex bg-gray-200 dark:bg-gray-700 px-4 py-1 text-sm text-gray-700 dark:text-gray-300 font-mono">
         <span>C</span>
       </div>
@@ -306,10 +306,11 @@ void root_handler_http_socket(int fd, sc_http_msg msg, sc_headers *headers, void
         1- Lack of HTTPS/SSL
     </h4>
     <p>
-        Currently, Sculpt lacks SSL, which really hampers its ability to be used in actual, real-world applications. No SSL means no HTTPS, limiting its use to local networks and IOT.
+        Currently, Sculpt lacks SSL.
     </p>
     <p>
         Although adding it is something I want to do, Sculpt is already a bit complex - and adding SSL via OpenSSL is not an easy task for me. I have loads of other projects I want to work on, so I don’t really have time for this right now, but maybe I’ll get to it someday.
+        Also, not having HTTPS is not always not that big of a deal, since it isn't required for IOT applications, and you can always use a reverse proxy (ie cloudflared) for HTTPS support if needed.
     </p>
 
     <h4 class="pt-5 pb-0">
@@ -348,11 +349,10 @@ void root_handler_http_socket(int fd, sc_http_msg msg, sc_headers *headers, void
         If Sculpt sounds interesting and you’d like to help out, contributions are more than welcome!
     </p>
     <p>
-        You can submit issues or create forks at Sculpt's <a href="https://github.com/mgcvale/sculpt" target="_blank">github</a>, or hit me up at miguelcvalealt@gmail.com for ideas/suggestions.
+        You can submit issues or create forks at Sculpt's <a href="https://github.com/mgcvale/sculpt" target="_blank">github</a>, or hit me up at m306523@dac.unicamp.br for ideas/suggestions.
     </p>
 </article>
-{:else}
-<article class="ml-2 dark:text-neutral-300">
+{:else}<article class="ml-2 dark:text-neutral-300">
     <h2 class="text-3xl mt-4 manrope">
       Sculpt 
       <span class="text-lg text-center">
@@ -382,11 +382,11 @@ void root_handler_http_socket(int fd, sc_http_msg msg, sc_headers *headers, void
     
     <h3>Visão geral e recursos da API do Sculpt</h3>
     
-    <p>Como mencionado, o Sculpt é relativamente minimalista. No entanto, ele oferece algumas funções auxiliares (helper functions) para tornar operações simples mais ágeis.</p>
+    <p>Como mencionado anteriormente, o Sculpt é relativamente minimalista. No entanto, ele oferece algumas funções auxiliares (helper functions) para tornar operações simples mais ágeis.</p>
     
     <p class="pb-2">Aqui está o código para um programa básico "hello world" no Sculpt:</p>
     
-    <div class="bg-gray-100 dark:bg-gray800 rounded-md overflow-hidden shadow-sm">
+    <div class="bg-gray-100 dark:bg-gray-800 rounded-md overflow-hidden shadow-sm">
       <div class="flex bg-gray-200 dark:bg-gray-700 px-4 py-1 text-sm text-gray-700 dark:text-gray-300 font-mono">
         <span>C</span>
       </div>
@@ -410,7 +410,7 @@ void root_handler_http_socket(int fd, sc_http_msg msg, sc_headers *headers, void
 
     <p>
         O Sculpt também suporta a criação de protocolos personalizados no estilo HTTP. Você pode definir o protocolo como customizado com <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">{'mgr->protocol = SC_PROTOCOL_CUSTOM'}</code>, e então definir tanto <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">{'mgr->protocol_handler'}</code> quanto <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">{'mgr->protocol_fallback'}</code>
-        , que serão executados conforme os dados de uma requisição chegam e quando um erro acontece, respectivamente (por exemplo, em uma implementação de protocolo HTTP, você faria o parsing da mensagem HTTP e dos cabeçalhos em <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">protocol_handler</code>, e retornaria algo como 400 bad request no <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">protocol_fallback</code>).
+        - que serão executados conforme os dados de uma requisição chegam e quando um erro acontece, respectivamente (por exemplo, em uma implementação de protocolo HTTP, você faria o parsing da mensagem HTTP e dos cabeçalhos em <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">protocol_handler</code>, e retornaria algo como 400 bad request no <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">protocol_fallback</code>).
     </p>
 
     <h3 class="pb-0">
@@ -442,9 +442,9 @@ void root_handler_http_socket(int fd, sc_http_msg msg, sc_headers *headers, void
         2- Configuração de I/O Assíncrono
     </h4>
     <p class="pb-2">
-        Através de <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">sc_mgr_epoll_init</code>, o Sculpt inicia seu componente principal: o epoll - responsável por lidar com I/O de dados assíncrono entre o servidor e múltiplos clientes. 
+        Através de <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">sc_mgr_epoll_init</code>, o Sculpt inicia seu componente principal: o epoll, responsável por lidar com I/O de dados assíncrono entre o servidor e múltiplos clientes. 
     </p>
-    <p>O Sculpt usa o epoll no modo level-triggered, o que significa que ele sempre reporta o descritor de arquivo de um cliente quando há dados, pois isso é mais fácil de gerenciar do que o modo *edge-triggered*, especialmente com I/O não bloqueante (non-blocking IO).</p>
+    <p>O Sculpt usa o epoll no modo level-triggered (disparo por nível), o que significa que ele sempre reporta o descritor de arquivo de um cliente quando há dados, pois isso é mais fácil de gerenciar do que o modo edge-triggered (disparo por borda), especialmente com I/O não bloqueante (non-blocking IO).</p>
     <p>Além disso, o Sculpt também suporta I/O não bloqueante, com o uso de <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">O_NONBLOCK</code> no epoll, e a correta análise de <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">EWOULDBLOCK</code>.</p>
     <p>Ele também usa <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">EPOLLONESHOT</code> para gerenciamento explícito do estado da conexão.</p>
 
@@ -473,7 +473,7 @@ void root_handler_http_socket(int fd, sc_http_msg msg, sc_headers *headers, void
             </ol>
         </li>
     </ol>
-    <p>Para mais informações sobre tudo isso, você pode verificar o código do Sculpt diretamente. A função <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">sc_mgr_poll()</code> é definida em <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">src/sculpt_conn.c</code>, no <a href="https://github.com/mgcvale/sculpt" target="_blank">github do Sculpt.</a></p>
+    <p>Para mais informações sobre tudo isso, você pode verificar o código do Sculpt diretamente. A função <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">sc_mgr_poll()</code> é definida em <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">src/sculpt_conn.c</code>, no <a href="https://github.com/mgcvale/sculpt" target="_blank">GitHub do Sculpt.</a></p>
     
     <h3 class="pb-0">Limitações (atuais) do Sculpt</h3>
     <p class="text-md pb-2">
@@ -484,10 +484,10 @@ void root_handler_http_socket(int fd, sc_http_msg msg, sc_headers *headers, void
         1- Falta de HTTPS/SSL
     </h4>
     <p>
-        Atualmente, o Sculpt não possui SSL, o que realmente dificulta sua utilização em aplicações reais. Sem SSL significa sem HTTPS, limitando seu uso a redes locais e IOT.
+        Atualmente, o Sculpt não possui SSL.
     </p>
     <p>
-        Embora adicionar isso seja algo que eu queira fazer, o Sculpt já é um pouco complexo, e adicionar SSL via OpenSSL não é uma tarefa fácil para mim. Tenho muitos outros projetos nos quais quero trabalhar, então não tenho tempo para isso no momento, mas talvez eu o faça algum dia.
+        Embora adicionar isso seja algo que eu queira fazer, o Sculpt já é um pouco complexo, e adicionar SSL via OpenSSL não é uma tarefa fácil para mim. Tenho muitos outros projetos nos quais quero trabalhar, então não tenho tempo para isso no momento, mas talvez eu o faça algum dia. Além disso, a falta de HTTPS nem sempre é um problema crítico, já que não é obrigatório para aplicações IoT e você sempre pode usar um proxy reverso (ex: cloudflared) para suporte a HTTPS se necessário.
     </p>
 
     <h4 class="pt-5 pb-0">
@@ -497,7 +497,7 @@ void root_handler_http_socket(int fd, sc_http_msg msg, sc_headers *headers, void
         Atualmente, o Sculpt faz o mínimo quando se trata dessas áreas. Ele faz o parsing de cabeçalhos, lida com erros básicos e faz o mínimo em termos de gerenciamento de conexão.
     </p>
     <p>
-        Dito isso, um framework pronto para produção precisa de mais do que apenas o básico. Ele deve capturar requisições malformadas, lidar com *timeouts* e conexões persistentes de forma limpa, validar cabeçalhos de entrada e retornar respostas de erro adequadas quando algo der errado.
+        Dito isso, um framework pronto para produção precisa de mais do que apenas o básico. Ele deve capturar requisições malformadas, lidar com timeouts e conexões persistentes de forma limpa, validar cabeçalhos de entrada e retornar respostas de erro adequadas quando algo der errado.
     </p>
     
     
@@ -526,7 +526,7 @@ void root_handler_http_socket(int fd, sc_http_msg msg, sc_headers *headers, void
         Se o Sculpt parece interessante e você gostaria de ajudar, as contribuições são mais do que bem-vindas!
     </p>
     <p>
-        Você pode enviar issues ou criar forks no <a href="https://github.com/mgcvale/sculpt" target="_blank">github do Sculpt</a>, ou entrar em contato comigo em miguelcvalealt@gmail.com para ideias/sugestões.
+        Você pode enviar issues ou criar forks no <a href="https://github.com/mgcvale/sculpt" target="_blank">GitHub do Sculpt</a>, ou entrar em contato comigo em m306523@dac.unicamp.br para ideias/sugestões.
     </p>
 </article>
 {/if}

@@ -38,13 +38,13 @@
                 items[0].title = "Change Theme";
                 items[0].smallTitle = "Theme";
                 items[1].title = "Change language";
-                items[1].title = "Language";
+                items[1].smallTitle = "Language";
                 break;
             case "portuguese":
                 items[0].title = "Trocar Tema";
                 items[0].smallTitle = "Tema";
                 items[1].title = "Trocar idioma";
-                items[1].title = "Idioma";
+                items[1].smallTitle = "Idioma";
         }
     })
 

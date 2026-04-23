@@ -36,7 +36,7 @@
             <p class="text-neutral-700 dark:text-neutral-300">{item.smallTitle}</p>
         </a>
     {/each}
-    {#each windowManager.allWindows() as window}
+    {#each windowManager.getWindowlist() as window}
         <a
                 class="grid-item"
                 onclick={window.action}

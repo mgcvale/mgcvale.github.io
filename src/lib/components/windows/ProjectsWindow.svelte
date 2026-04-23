@@ -17,12 +17,10 @@
     let currentProject: null | Component = $state(null);
 
     const projects = [
-        new ProjectEntry(0, "JurAI", "AI-Powered jurisprudence helper", "JurAI", "Auxiliador de Jurisptrudência por IA", "2023-2025", JurAIProject),
-        new ProjectEntry(1, "Opensync", "Self-hosted cloud solutions", "Opensync", "Soluções na nuvem auto-hospedadas", "2024-2026", OpensyncProject),
-        new ProjectEntry(2, "Sculpt", "HTTP Framework written in C", "Sculpt", "Framework HTTP escrita em C", "2024-2025", SculptProject),
-        new ProjectEntry(3, "Yami", "Social media for food critics", "Yami", "Rede social para críticos culinários", "2025-2026", YamiProject),
-        new ProjectEntry(4, "Portifolio", "This portifolio you're seeing", "Portifólio", "Esse site que você está vendo", "2024", PortifolioProject),
-        new ProjectEntry(5, "CotilMaps", "Internal college mapping", "CotilMaps", "Mapeamento interno do COTIL", "2023", CotilMapsProject),
+        new ProjectEntry(0, "Sculpt", "HTTP Framework written in C", "Sculpt", "Framework HTTP escrita em C", "2024-2025", SculptProject),
+        new ProjectEntry(1, "JurAI", "AI-Powered jurisprudence helper", "JurAI", "Auxiliador de Jurisptrudência por IA", "2023-2025", JurAIProject),
+        new ProjectEntry(2, "Yami", "Social media for food critics", "Yami", "Rede social para críticos culinários", "2025-2026", YamiProject),
+        new ProjectEntry(3, "Opensync", "Self-hosted cloud solutions", "Opensync", "Soluções na nuvem auto-hospedadas", "2024-2026", OpensyncProject),
     ];
     let currentProjects: ProjectEntry[] = $state(projects);
 

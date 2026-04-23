@@ -19,13 +19,13 @@
     <p class="dark:text-neutral-300
 ">Out of furstration with Google Photos' shady subscription tactics and limited phone storage, the Opensync project was born. It seeks to transform unused space on home computers into a convenient solution for mobile photo and file storage.</p>
 
-    <h2 class="mt-4">What Makes It Unique?</h2>
+    <h3 class="mt-4">What Makes It Unique?</h3>
     <p class="dark:text-neutral-300
 ">Today, most file backup systems are subscription-based and hosted on the cloud, with few open-source and self-hosted options available. Furthermore, the open-source solutions that do exist rarely offer automatic integration with phone photos (like Google Photos) while maintaining a streamlined feature set and performant backend.</p>
     <p class="dark:text-neutral-300
 ">Opensync aims to fill this gap, offering a streamlined and performant backend written in C, and a multi-platform frontend with seamless integration and bloat-free interface.</p>
 
-    <h2 class="mt-4">How is this being done?</h2>
+    <h3 class="mt-4">How is this being done?</h3>
     <h3>The backend</h3>
     <p class="dark:text-neutral-300
 ">In order to make this project possible, our primary focus was the backend, as one of our main goals was to build something performant and streamlined that could run on any hardware.</p>
@@ -44,6 +44,9 @@
 ">Additionally, the stack also includes Tailwind for styling.</p>
 
     <p class="mt-4 dark:text-neutral-300">Here are its Github repos: <a href="https://github.com/mgcvale/opensync-backend" class="text-sky-700 dark:text-sky-300 hover:underline" target="_blank">Bakcend</a>, <a href="https://github.com/mgcvale/opensync-website" class="text-sky-700 dark:text-sky-300 hover:underline" target="_blank">Website</a>.</p>
+
+    <h3>Notice!</h3>
+    <p>Due to its complexity, niche use and other ongoing projects of mine, I have paused Opensync's development, altohugh it is still a project I want to finish someday.</p>
 </article>
 {:else}
 <a class="logo text-black dark:text-white" href="https://github.com/mgcvale/opensync-backend" target="_blank">
@@ -63,7 +66,7 @@
         O projeto Opensync nasceu da frustração com as táticas de assinatura questionáveis do Google Fotos e o espaço limitado de armazenamento nos celulares. Ele busca transformar o espaço não utilizado em computadores domésticos em uma solução conveniente para o armazenamento de fotos e arquivos móveis.
     </p>
 
-    <h2 class="mt-4">O Que o Torna Único?</h2>
+    <h3 class="mt-4">O Que o Torna Único?</h3>
     <p class="dark:text-neutral-300">
         Atualmente, a maioria dos sistemas de backup de arquivos é baseada em assinatura e hospedada na nuvem, com poucas opções de código aberto e auto-hospedadas disponíveis. Além disso, as soluções de código aberto existentes raramente oferecem integração automática com fotos do celular (como o Google Fotos), ao mesmo tempo em que mantêm um conjunto de recursos simplificado e um backend de alto desempenho.
     </p>
@@ -71,29 +74,32 @@
         O Opensync visa preencher essa lacuna, oferecendo um backend otimizado e de alto desempenho escrito em C, e um frontend multi-plataforma com integração perfeita e uma interface simples (bloat-free).
     </p>
 
-    <h2 class="mt-4">Como Isso Está Sendo Feito?</h2>
-    <h3>O Backend</h3>
+    <h3 class="mt-4">Como isso está sendo feito?</h3>
+    <h3>O backend</h3>
     <p class="dark:text-neutral-300">
         Para tornar este projeto possível, nosso foco principal foi o backend, já que um dos nossos principais objetivos era construir algo performático e simplificado que pudesse rodar em qualquer hardware.
     </p>
     <p class="dark:text-neutral-300">Então, C foi uma escolha óbvia para o backend. Como o sistema não seria excessivamente complexo, a escalabilidade não era uma grande preocupação, e o uso de C nos permitiu minimizar o overhead.</p>
 
     <p class="mt-2 dark:text-neutral-300">Tivemos muitas opções de frameworks para usar (incluindo raw sockets), mas a grande maioria deles foi projetada para servidores que servem arquivos estáticos (como H2o), sistemas embarcados (como mongoose e CivetWeb), ou tinham APIs excessivamente complexas (como libmicrohttpd). Além disso, os poucos frameworks projetados para HTTP que tinham boas APIs não lidavam bem com upload de arquivos, geralmente alocando o arquivo inteiro na RAM antes de enviá-lo para o disco.</p>
-    <p class="dark:text-neutral-300">Após pesquisar e testar muitos frameworks, acabei optando por <a target="_blank" href="https://kore.io">Kore</a>. Embora não fosse uma combinação perfeita inicialmente, fiz algumas modificações no código-fonte e discuti minhas preocupações com o criador, o que o fez funcionar perfeitamente para nossas necessidades. Ele oferece uma ótima API, suporta várias extensões e é altamente performático.</p>
+    <p class="dark:text-neutral-300">Após pesquisar e testar muitos frameworks, acabei optando pelo <a target="_blank" href="https://kore.io">Kore</a>. Embora não fosse uma combinação perfeita inicialmente, fiz algumas modificações no código-fonte e discuti minhas preocupações com o criador, o que o fez funcionar perfeitamente para nossas necessidades. Ele oferece uma ótima API, suporta várias extensões e é altamente performático.</p>
     <p class="dark:text-neutral-300">Se tiver interesse, você pode conferir meu <a target="_blank" href="https://github.com/mgcvale/kore">fork</a> dele.</p>
 
-    <h3>O Frontend</h3>
+    <h3>O frontend</h3>
     <p class="dark:text-neutral-300">
         Diferentemente do backend, o frontend não precisava focar tanto em desempenho e otimização, mas ainda queríamos manter o espírito minimalista.
     </p>
     <p class="dark:text-neutral-300">
-        Para isso, escolhemos o Svelte. Ele compila para JS, CSS e HTML puros, e é conhecido como um dos frameworks JS front-end reativos mais rápidos, por isso decidimos que ele se encaixava bem no nosso projeto.
+        Para isso, escolhemos o Svelte. Ele compila para JS, CSS e HTML puros e é conhecido como um dos frameworks JS front-end reativos mais rápidos, por isso decidimos que ele se encaixava bem no nosso projeto.
     </p>
     <p class="dark:text-neutral-300">
         Além disso, a stack também inclui Tailwind para estilização.
     </p>
 
-    <p class="mt-4 dark:text-neutral-300">Aqui estão os repositórios Github: <a href="https://github.com/mgcvale/opensync-backend" class="text-sky-700 dark:text-sky-300 hover:underline" target="_blank">Backend</a>, <a href="https://github.com/mgcvale/opensync-website" class="text-sky-700 dark:text-sky-300 hover:underline" target="_blank">Website</a>.</p>
+    <p class="mt-4 dark:text-neutral-300">Aqui estão os repositórios no Github: <a href="https://github.com/mgcvale/opensync-backend" class="text-sky-700 dark:text-sky-300 hover:underline" target="_blank">Backend</a>, <a href="https://github.com/mgcvale/opensync-website" class="text-sky-700 dark:text-sky-300 hover:underline" target="_blank">Website</a>.</p>
+
+    <h3>Aviso!</h3>
+    <p>Devido à sua complexidade, uso de nicho e outros projetos em andamento, pausei o desenvolvimento do Opensync, embora ainda seja um projeto que pretendo finalizar algum dia.</p>
 </article>
 {/if}
 
