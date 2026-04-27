@@ -3,7 +3,7 @@
     const urlRegex = "(http(s)?://)?(www\\.)?([a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}|localhost)(:[0-9]{1,5})?([-a-zA-Z0-9@:%_\\+.~#?&//=]*)";
     const searchEngineFormat: string = "https://duckduckgo.com/?q=";
     let searchbarUrl: string = $state("");
-    let currentUrl: string = $state("https://duckduckgo.com");
+    let currentUrl: string = $state("https://unicamp.br");
     let iframe: HTMLIFrameElement | null = $state(null);
 
     function processUrl(): void {
