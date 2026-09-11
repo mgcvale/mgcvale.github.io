@@ -9,9 +9,9 @@
 
     const code1English = `
 #include <stdio.h>
-#include <sys/signal.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sys/socket.h>
-#include <netinet/in.h>
 #include "src/sculpt.h"
 
 // Defines the handler for the '/' route
@@ -31,17 +31,29 @@ void root_handler_http(int fd, sc_http_msg msg, sc_headers *headers, void *extra
 }
 
 int main() {
-    // Creates and configures the socket for listening
-    sc_addr_info addr_info = sc_addr_create(AF_INET, 8000, INADDR_ANY);
-    // Creates the connection manager
-    sc_conn_mgr *mgr = sc_mgr_create(addr_info, NULL);
+    int error;
+    // Creates the connection manager with Sculpt's default settings
+    sc_conn_mgr *mgr = sc_mgr_create(&error);
+    if (mgr == NULL) {
+        fprintf(stderr, "Error creating Sculpt manager: %d\\n", error);
+        return EXIT_FAILURE;
+    }
 
     // Initializes epoll for asynchronous I/O
-    sc_mgr_epoll_init(mgr);
+    if (sc_mgr_epoll_init(mgr) != SC_OK) {
+        sc_mgr_finish(mgr);
+        return EXIT_FAILURE;
+    }
     // Initializes the connection pool
-    sc_mgr_conn_pool_init(mgr, 3);
+    if (sc_mgr_conn_pool_init(mgr) != SC_OK) {
+        sc_mgr_finish(mgr);
+        return EXIT_FAILURE;
+    }
     // Puts the socket in listen mode
-    sc_mgr_listen(mgr);
+    if (sc_mgr_listen(mgr) != SC_OK) {
+        sc_mgr_finish(mgr);
+        return EXIT_FAILURE;
+    }
     // Binds the handler to the "/" route
     sc_mgr_bind_soft(mgr, "/", root_handler_http);
 
@@ -67,7 +79,7 @@ void root_handler_http_socket(int fd, sc_http_msg msg, sc_headers *headers, void
         "\\r\\n"
         "%s", body_len, body);
 
-    if (len < 0 || len >= sizeof(response)) {
+    if (len < 0 || (size_t) len >= sizeof(response)) {
         perror("Response too large or formatting error");
         return;
     }
@@ -81,9 +93,9 @@ void root_handler_http_socket(int fd, sc_http_msg msg, sc_headers *headers, void
 
     const code1Portuguese = `
 #include <stdio.h>
-#include <sys/signal.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sys/socket.h>
-#include <netinet/in.h>
 #include "src/sculpt.h"
 
 // Define o manipulador (handler) para a rota '/'
@@ -103,17 +115,29 @@ void root_handler_http(int fd, sc_http_msg msg, sc_headers *headers, void *extra
 }
 
 int main() {
-    // Cria e configura o socket para escuta (listen)
-    sc_addr_info addr_info = sc_addr_create(AF_INET, 8000, INADDR_ANY);
-    // Cria o gerenciador de conexões
-    sc_conn_mgr *mgr = sc_mgr_create(addr_info, NULL);
+    int error;
+    // Cria o gerenciador de conexões com as configurações padrão do Sculpt
+    sc_conn_mgr *mgr = sc_mgr_create(&error);
+    if (mgr == NULL) {
+        fprintf(stderr, "Error creating Sculpt manager: %d\\n", error);
+        return EXIT_FAILURE;
+    }
 
     // Inicializa o epoll para I/O assíncrono
-    sc_mgr_epoll_init(mgr);
+    if (sc_mgr_epoll_init(mgr) != SC_OK) {
+        sc_mgr_finish(mgr);
+        return EXIT_FAILURE;
+    }
     // Inicializa o pool de conexões
-    sc_mgr_conn_pool_init(mgr, 3);
+    if (sc_mgr_conn_pool_init(mgr) != SC_OK) {
+        sc_mgr_finish(mgr);
+        return EXIT_FAILURE;
+    }
     // Coloca o socket em modo de escuta (listen)
-    sc_mgr_listen(mgr);
+    if (sc_mgr_listen(mgr) != SC_OK) {
+        sc_mgr_finish(mgr);
+        return EXIT_FAILURE;
+    }
     // Associa o manipulador (handler) à rota "/"
     sc_mgr_bind_soft(mgr, "/", root_handler_http);
 
@@ -139,7 +163,7 @@ void root_handler_http_socket(int fd, sc_http_msg msg, sc_headers *headers, void
         "\\r\\n"
         "%s", body_len, body);
 
-    if (len < 0 || len >= sizeof(response)) {
+    if (len < 0 || (size_t) len >= sizeof(response)) {
         perror("Response too large or formatting error");
         return;
     }
@@ -199,12 +223,14 @@ void root_handler_http_socket(int fd, sc_http_msg msg, sc_headers *headers, void
     </p>
     
     <p>
-      For that reason, the project's development is currently stalled. 
+      For that reason, the project's development stalled for a while. I have recently resumed work on it.
     </p>
     
     <h3>Sculpt's API overview and features</h3>
     
     <p>As mentioned earlier, Sculpt is relatively minimal. However, it does offer some helper functions to make simple operations more streamlined.</p>
+
+    <p>Sculpt also supports optional config files for address, port, logging, epoll and connection pool settings.</p>
     
     <p class="pb-2">Here's the code for a basic hello world program in Sculpt:</p>
     
@@ -227,7 +253,7 @@ void root_handler_http_socket(int fd, sc_http_msg msg, sc_headers *headers, void
         </div>
     </div>
     <p class="py-2 pt-0 text-sm text-neutral-500 dark:text-neutral-400">
-        Note that while Sculpt reads the headers and HTTP message for you (shown by the existence of sc_http_msg and sc_headers on the handlers), it parses the headers but leaves the request body unread, so you can read it manually from the socket or with sc_easy_recv.
+        Note that while Sculpt reads the headers and HTTP message for you (shown by the existence of sc_http_msg and sc_headers on the handlers), it parses the headers but leaves the request body unread, so you can read it manually from the socket.
     </p>
 
     <p>
@@ -252,7 +278,7 @@ void root_handler_http_socket(int fd, sc_http_msg msg, sc_headers *headers, void
     </p>
     <ul class="list-disc pl-8">
         <li>Address info</li>
-        <li>A connection pool, with its associated configs (max_age, timeout, max_conn, etc)</li>
+        <li>A connection pool, with its associated configs (conn_max_age, conn_timeout, conn_pool_size, etc)</li>
         <li>The main server file descriptor</li>
         <li>epoll's data (for asynchronous I/O)</li>
         <li>The server's endpoints</li>
@@ -333,9 +359,16 @@ void root_handler_http_socket(int fd, sc_http_msg msg, sc_headers *headers, void
     <p>
         Functions like sc_easy_recv, sc_easy_conn_close and sc_easy_recv_nonblock are pretty basic, but are still missing from Sculpt.
     </p>
+
+    <h4 class="pt-5 pb-0">
+        4- Rigorous integration and unit testing
+    </h4>
+    <p>
+        Sculpt still lacks a thorough integration and unit test suite. Work on this is currently underway.
+    </p>
     
     <h4 class="pt-5 pb-0">
-        4- Thread safety
+        5- Thread safety
     </h4>
     <p class="pb-3">
         As a performance-oriented framework, thread-safety and multithreading support is also pretty important, but Sculpt lacks that.
@@ -377,12 +410,14 @@ void root_handler_http_socket(int fd, sc_http_msg msg, sc_headers *headers, void
     </p>
     
     <p>
-      Por esse motivo, o desenvolvimento do projeto está atualmente paralisado. 
+      Por esse motivo, o desenvolvimento do projeto ficou paralisado por um tempo. Recentemente, voltei a trabalhar nele.
     </p>
     
     <h3>Visão geral e recursos da API do Sculpt</h3>
     
     <p>Como mencionado anteriormente, o Sculpt é relativamente minimalista. No entanto, ele oferece algumas funções auxiliares (helper functions) para tornar operações simples mais ágeis.</p>
+
+    <p>O Sculpt também aceita arquivos de configuração opcionais para endereço, porta, logs, epoll e configurações do pool de conexões.</p>
     
     <p class="pb-2">Aqui está o código para um programa básico "hello world" no Sculpt:</p>
     
@@ -405,7 +440,7 @@ void root_handler_http_socket(int fd, sc_http_msg msg, sc_headers *headers, void
         </div>
     </div>
     <p class="py-2 pt-0 text-sm text-neutral-500 dark:text-neutral-400">
-        Note que, embora o Sculpt leia os cabeçalhos e a mensagem HTTP para você (mostrado pela existência de <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">sc_http_msg</code> e <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">sc_headers</code> nos handlers), ele analisa os cabeçalhos, mas deixa o corpo da requisição (request body) sem leitura, para que você possa lê-lo manualmente a partir do socket ou com <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">sc_easy_recv</code>.
+        Note que, embora o Sculpt leia os cabeçalhos e a mensagem HTTP para você (mostrado pela existência de <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">sc_http_msg</code> e <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">sc_headers</code> nos handlers), ele analisa os cabeçalhos, mas deixa o corpo da requisição (request body) sem leitura, para que você possa lê-lo manualmente a partir do socket.
     </p>
 
     <p>
@@ -430,7 +465,7 @@ void root_handler_http_socket(int fd, sc_http_msg msg, sc_headers *headers, void
     </p>
     <ul class="list-disc pl-8">
         <li>Informações de endereço (Address info)</li>
-        <li>Um pool de conexões, com suas configurações associadas (<code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">max_age</code>, <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">timeout</code>, <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">max_conn</code>, etc.)</li>
+        <li>Um pool de conexões, com suas configurações associadas (<code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">conn_max_age</code>, <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">conn_timeout</code>, <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">conn_pool_size</code>, etc.)</li>
         <li>O descritor de arquivo do servidor principal (main server file descriptor)</li>
         <li>Dados do epoll (para I/O assíncrono)</li>
         <li>Os endpoints do servidor</li>
@@ -510,9 +545,16 @@ void root_handler_http_socket(int fd, sc_http_msg msg, sc_headers *headers, void
     <p>
         Funções como <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">sc_easy_recv</code>, <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">sc_easy_conn_close</code> e <code class="bg-neutral-300 dark:bg-neutral-600 px-1 py-0.5 rounded-sm text-sm">sc_easy_recv_nonblock</code> são bem básicas, mas ainda estão faltando no Sculpt.
     </p>
+
+    <h4 class="pt-5 pb-0">
+        4- Testes rigorosos de integração e unidade
+    </h4>
+    <p>
+        O Sculpt ainda não possui uma suíte completa de testes de integração e unidade. Esse trabalho está em andamento.
+    </p>
     
     <h4 class="pt-5 pb-0">
-        4- Segurança de threads (Thread safety)
+        5- Segurança de threads (Thread safety)
     </h4>
     <p class="pb-3">
         Como um framework orientado a desempenho, o suporte à segurança de threads (thread-safety) e multithreading também é bastante importante, mas o Sculpt não possui isso.
