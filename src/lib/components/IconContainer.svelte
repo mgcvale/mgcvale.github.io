@@ -1,9 +1,14 @@
+<script module lang="ts">
+    let nextHoverStoreId = 0;
+</script>
+
 <script lang="ts">
     import {
       useTransform,
       useSpring,
     } from "svelte-motion";
-    import { writable } from "svelte/store";
+    import { onDestroy } from "svelte";
+    import { baselineEstimator, trackedWritable } from "../../service/trackedWritable";
     import { Motion } from "svelte-motion";
     import { fade, scale } from "svelte/transition";
 
@@ -26,7 +31,8 @@
     //   Adjust stiffness and damping as per needs
     let width = useSpring(widthSync, { stiffness: 400, damping: 25 });
   
-    let hovered = writable(false);
+    let hovered = trackedWritable(`IconContainer.hovered:${nextHoverStoreId++}`, false, baselineEstimator);
+    onDestroy(() => hovered.dispose());
   
     function handleMouseEnter() {
       hovered.set(true);

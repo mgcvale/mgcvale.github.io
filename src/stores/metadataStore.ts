@@ -1,4 +1,4 @@
-import {writable} from "svelte/store";
+import { baselineEstimator, trackedWritable } from "../service/trackedWritable";
 
 export type Pair = {
     x: number, y: number
@@ -9,7 +9,7 @@ export type AppMetadata = {
     fullscreenSize: Pair,
 };
 
-export const appMetadata = writable<AppMetadata>({
+export const appMetadata = trackedWritable<AppMetadata>('appMetadata', {
     fullscreenSize: {x: 0, y: 0},
     fullscreenCoords: {x: 0, y: 0},
-});
+}, baselineEstimator);

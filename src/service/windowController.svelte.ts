@@ -1,9 +1,10 @@
 import type {Pair} from "../stores/metadataStore";
-import {writable, type Writable} from "svelte/store";
+import type { Writable } from "svelte/store";
+import { baselineEstimator, trackedWritable } from "./trackedWritable";
 import {Notifier} from "../util/notifier.js.js";
 
 export class WindowControllerSvelte {
-    mouseCoords: Writable<Pair> = writable<Pair>({x: 0, y: 0});
+    mouseCoords: Writable<Pair> = trackedWritable<Pair>('windowController.mouseCoords', {x: 0, y: 0}, baselineEstimator);
     altDown: boolean = $state(false);
 
     public constructor() {

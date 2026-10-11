@@ -1,4 +1,4 @@
-import { type Writable, writable } from 'svelte/store';
 import type { Component } from "svelte";
+import { baselineEstimator, trackedWritable } from "../service/trackedWritable";
 
-export const modalStore: Writable<Component | null> = writable(null);
+export const modalStore = trackedWritable<Component | null>('modalStore', null, baselineEstimator);

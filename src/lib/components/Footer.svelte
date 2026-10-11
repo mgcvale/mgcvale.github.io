@@ -57,9 +57,9 @@
     }
 </script>
 
-<footer bind:this={ref} id="footer" class="fixed w-full flex justify-center align-middle bottom-0 my-4" style="z-index: 999">
+<footer bind:this={ref} id="footer" class="fixed w-full flex justify-center align-middle bottom-0 my-4 pointer-events-none" style="z-index: 999">
     {#if !$applicationState.isTouchscreen}
-        <FloatingDockDesktop bind:items={items} className={"drop-shadow-md dock-desktop"}/>
+        <FloatingDockDesktop bind:items={items} className={"drop-shadow-md dock-desktop pointer-events-auto"}/>
     {/if}
 </footer>
 {#if $applicationState.isTouchscreen}

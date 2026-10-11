@@ -1,9 +1,9 @@
 import type { Component } from "svelte";
-import { writable, type Writable } from "svelte/store";
+import { baselineEstimator, trackedWritable } from "../service/trackedWritable";
 
 export interface SnackbarConfig {
     component: Component;
     props?: Record<string, any>;
 }
 
-export const snackbarStore: Writable<SnackbarConfig | null> = writable(null);
+export const snackbarStore = trackedWritable<SnackbarConfig | null>('snackbarStore', null, baselineEstimator);

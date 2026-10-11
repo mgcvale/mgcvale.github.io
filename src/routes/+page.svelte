@@ -5,7 +5,6 @@
     import { windowController } from "../service/windowController.svelte.js";
     import { windowManager } from "../service/windowManager.svelte.js";
 
-
     import {onMount} from "svelte";
     import Modal from "$lib/components/Modal.svelte";
     import {modalStore} from "../stores/modalStore";
@@ -14,16 +13,21 @@
     import Snackbar from "$lib/components/Snackbar.svelte";
     import { snackbarStore } from "../stores/snackbarStore";
     import NotificationSnackbar from "$lib/components/NotificationSnackbar.svelte";
-    import { englishWindows, windowNames } from "../util/windows";
+    import { englishWindows, windowNames } from "../data/windows";
+    import { widgetManager } from "../service/widgetManager.svelte";
+    import { englishWidgets } from "../data/widgets";
+    import BaseWidget from "$lib/components/widget/BaseWidget.svelte";
 
     let header: HTMLElement | undefined = $state();
     let footer: HTMLElement | undefined = $state();
+    let isMobile = $state(false);
     let oldAppLang = $applicationState.language;
 
     onMount(() => {
         windowController.initialize(window);
 
         const onresize = () => {
+            isMobile = window.innerWidth < 768;
             if (header === undefined || footer == undefined) {
                 console.error("Error calculating fullscreen size");
                 return;
@@ -107,9 +111,10 @@
         setPortuguese();
     }
 
-    console.log(windowManager.getWindowlist());
-    console.log(windowManager.getWindowlist().length);
+    englishWidgets.forEach(w => widgetManager.addWidget(w));
 
+    //console.log(windowManager.getWindowlist());
+    //console.log(windowManager.getWindowlist().length);
 </script>
 
 <Header bind:ref={header}></Header>
@@ -135,5 +140,18 @@
     />
     <Modal />
     <Snackbar />
+    {#if !isMobile}
+        {#each widgetManager.getWidgetList() as widget}
+            {#if widget.open}
+                {@const position = isMobile
+                    ? { ...widget.position, anchor: 'top-left' as const, y: $appMetadata.fullscreenCoords.y + widget.position.y }
+                    : widget.position}
+                <BaseWidget name={widget.name} pos={position} posMinimized={position} onClose={() => widgetManager.closeWidget(widget)}>
+                    <widget.component />
+                </BaseWidget>
+            {/if}
+        {/each}
+    {/if}
+
 </main>
 <Footer bind:ref={footer}></Footer>

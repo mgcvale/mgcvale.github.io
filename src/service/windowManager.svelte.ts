@@ -1,4 +1,6 @@
 import type { Component } from 'svelte';
+import { baselineEstimator, trackSource } from './trackedWritable';
+import { WindArrowDown } from 'lucide-svelte';
 
 export class WindowEntry {
     component: Component;
@@ -61,7 +63,7 @@ class WindowManager {
     public closeWindow(window: WindowEntry): void {
         window.minimized = true;
         setTimeout(() => {
-            window.open = false;
+            window.open = false;baselineEstimator
 
             this.windowList.forEach((w: WindowEntry) => {
                 if (w.zIndex > window.zIndex) {
@@ -116,3 +118,25 @@ class WindowManager {
 }
 
 export let windowManager: WindowManager = new WindowManager();
+
+const encoder = new TextEncoder();
+
+function functionSource(component: Function): string {
+    return Function.prototype.toString.call(component);
+}
+
+
+trackSource('windowManager', () =>
+    baselineEstimator({
+        windows: windowManager.getWindowlist().filter(window => window.open).map(window => ({
+            id: window.id,
+            name: window.name,
+            smallName: window.smallName,
+            action: functionSource(window.action),
+            open: window.open,
+            component: functionSource(window.component),
+            minimized: window.minimized,
+            zIndex: window.zIndex
+        }))
+    })
+);

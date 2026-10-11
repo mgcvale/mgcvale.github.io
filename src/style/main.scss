@@ -31,8 +31,18 @@ html {
   height: 200vh;
   border-radius: 10vh;
 
-  @media (max-width: 768px) {
-    display: none;
+  @media (max-width: 767px) {
+    position: fixed;
+    transform: rotateX(50deg) rotateY(-15deg) rotateZ(40deg) scale(2);
+    background: none;
+    stroke: currentColor;
+    opacity: 0.15;
+    border-radius: 0;
+    transition: stroke 200ms ease-in-out;
+
+    html.dark & {
+      background: none;
+    }
   }
 }
 

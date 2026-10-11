@@ -1,11 +1,11 @@
-import { writable, type Writable } from "svelte/store";
+import { baselineEstimator, trackedWritable } from "../service/trackedWritable";
 
 export type ApplicationState = {
     isTouchscreen: boolean,
     language: string,
 };
 
-export const applicationState: Writable<ApplicationState> = writable<ApplicationState>({
+export const applicationState = trackedWritable<ApplicationState>('applicationState', {
     isTouchscreen: false,
     language: "english",
-});
+}, baselineEstimator);
