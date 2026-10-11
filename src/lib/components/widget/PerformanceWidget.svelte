@@ -23,7 +23,7 @@
         metrics: 'Métricas de desempenho',
         memoryUsage: 'Uso de memória',
         openWindows: 'Janelas abertas',
-        loopLag: 'Atraso',
+        loopLag: 'Lag do loop',
         loopLagDescription: 'Atraso suavizado do temporizador como porcentagem do tempo decorrido. Valores maiores indicam uma interface menos responsiva.',
     });
     let memoryFormat = $derived(new Intl.NumberFormat(labels.locale, {
