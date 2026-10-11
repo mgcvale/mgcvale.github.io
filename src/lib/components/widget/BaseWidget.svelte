@@ -4,6 +4,7 @@
     import { cubicInOut } from "svelte/easing";
     import { scale, slide, type TransitionConfig } from "svelte/transition";
     import type { WidgetPosition } from "../../../service/widgetManager.svelte";
+    import { applicationState } from "../../../stores/applicationStore";
 
     let { 
         pos,
@@ -22,6 +23,9 @@
     let widgetElement: HTMLDivElement;
     let minimized = $state(false);
     let minimizedWidth = $state<number>();
+    let controls = $derived($applicationState.language === 'english'
+        ? { restore: 'Restore', minimize: 'Minimize', close: 'Close' }
+        : { restore: 'Restaurar', minimize: 'Minimizar', close: 'Fechar' });
     let currentPos = $derived(minimized ? posMinimized : pos);
     let currentWidth = $derived(currentPos.w ?? (minimized ? minimizedWidth : undefined));
     const onMinimize = () => {
@@ -57,7 +61,7 @@
         <button
             type="button"
             class="p-1"
-            aria-label={`${minimized ? 'Restore' : 'Minimize'} ${name}`}
+            aria-label={`${minimized ? controls.restore : controls.minimize} ${name}`}
             aria-expanded={!minimized}
             onclick={onMinimize}
         >
@@ -66,9 +70,9 @@
                 class={`transition-transform duration-[400ms] ease-in-out motion-reduce:transition-none ${minimized ? 'rotate-180' : 'rotate-0'}`}
             />
         </button>
-        <div class="pl-1">
-            <X size={16} onclick={onClose}></X>
-        </div>
+        <button type="button" class="pl-1" aria-label={`${controls.close} ${name}`} onclick={onClose}>
+            <X size={16} />
+        </button>
     </div>
     {#if !minimized}
         <div

@@ -15,7 +15,7 @@
     import NotificationSnackbar from "$lib/components/NotificationSnackbar.svelte";
     import { englishWindows, windowNames } from "../data/windows";
     import { widgetManager } from "../service/widgetManager.svelte";
-    import { englishWidgets } from "../data/widgets";
+    import { englishWidgets, widgetNames } from "../data/widgets";
     import BaseWidget from "$lib/components/widget/BaseWidget.svelte";
 
     let header: HTMLElement | undefined = $state();
@@ -143,10 +143,11 @@
     {#if !isMobile}
         {#each widgetManager.getWidgetList() as widget}
             {#if widget.open}
+            {@const names = widgetNames[widget.id as keyof typeof widgetNames]}
                 {@const position = isMobile
                     ? { ...widget.position, anchor: 'top-left' as const, y: $appMetadata.fullscreenCoords.y + widget.position.y }
                     : widget.position}
-                <BaseWidget name={widget.name} pos={position} posMinimized={position} onClose={() => widgetManager.closeWidget(widget)}>
+            <BaseWidget name={names?.[$applicationState.language === 'english' ? 'english' : 'portuguese'] ?? widget.name} pos={position} posMinimized={position} onClose={() => widgetManager.closeWidget(widget)}>
                     <widget.component />
                 </BaseWidget>
             {/if}

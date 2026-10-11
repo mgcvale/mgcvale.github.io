@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import { totalSizeBytes } from "../../../service/trackedWritable";
     import { windowManager } from "../../../service/windowManager.svelte";
+    import { applicationState } from "../../../stores/applicationStore";
 
     const updateInterval = 300; // ms
     const smoothingTime = 800; // ms; larger values soften spikes but respond more slowly
@@ -9,6 +10,32 @@
     let memory = $state(0);
     let openWindows = $state(0);
     let mainThreadDelay = $state(0);
+
+    let labels = $derived($applicationState.language === 'english' ? {
+        locale: 'en-US',
+        metrics: 'Performance metrics',
+        memoryUsage: 'Memory usage',
+        openWindows: 'Open windows',
+        loopLag: 'Loop Lag',
+        loopLagDescription: 'Smoothed timer lateness as a share of elapsed time, where higher values mean reduced responsiveness.',
+    } : {
+        locale: 'pt-BR',
+        metrics: 'Métricas de desempenho',
+        memoryUsage: 'Uso de memória',
+        openWindows: 'Janelas abertas',
+        loopLag: 'Atraso',
+        loopLagDescription: 'Atraso suavizado do temporizador como porcentagem do tempo decorrido. Valores maiores indicam uma interface menos responsiva.',
+    });
+    let memoryFormat = $derived(new Intl.NumberFormat(labels.locale, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    }));
+    let countFormat = $derived(new Intl.NumberFormat(labels.locale));
+    let delayFormat = $derived(new Intl.NumberFormat(labels.locale, {
+        style: 'percent',
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1,
+    }));
 
     function updateMeasurements() {
         memory = totalSizeBytes() / 1024;
@@ -57,26 +84,26 @@
     });
 </script>
 
-<table class="w-full border-separate border-spacing-x-0 border-spacing-y-1 px-1.5" aria-label="Performance metrics">
+<table class="w-full border-separate border-spacing-x-0 border-spacing-y-1 px-1.5" aria-label={labels.metrics}>
     <tbody>
         <tr>
-            <th scope="row" class="whitespace-nowrap text-left font-normal">Memory usage</th>
+            <th scope="row" class="whitespace-nowrap text-left font-normal">{labels.memoryUsage}</th>
             <td aria-hidden="true" class="px-3"></td>
-            <td class="min-w-[9ch] whitespace-nowrap text-right tabular-nums">{memory.toFixed(2)} KiB</td>
+            <td class="min-w-[9ch] whitespace-nowrap text-right tabular-nums">{memoryFormat.format(memory)} KiB</td>
         </tr>
         <tr>
-            <th scope="row" class="whitespace-nowrap text-left font-normal">Open windows</th>
+            <th scope="row" class="whitespace-nowrap text-left font-normal">{labels.openWindows}</th>
             <td aria-hidden="true" class="px-3"></td>
-            <td class="min-w-[9ch] whitespace-nowrap text-right tabular-nums">{openWindows}</td>
+            <td class="min-w-[9ch] whitespace-nowrap text-right tabular-nums">{countFormat.format(openWindows)}</td>
         </tr>
         <tr>
             <th
                 scope="row"
                 class="whitespace-nowrap text-left font-normal"
-                title="Smoothed timer lateness as a share of elapsed time, where higher values mean reduced responsiveness."
-            >Loop Lag</th>
+                title={labels.loopLagDescription}
+            >{labels.loopLag}</th>
             <td aria-hidden="true" class="px-3"></td>
-            <td class="min-w-[9ch] whitespace-nowrap text-right tabular-nums">{mainThreadDelay.toFixed(1)}%</td>
+            <td class="min-w-[9ch] whitespace-nowrap text-right tabular-nums">{delayFormat.format(mainThreadDelay / 100)}</td>
         </tr>
     </tbody>
 </table>

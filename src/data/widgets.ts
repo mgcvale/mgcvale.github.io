@@ -1,10 +1,17 @@
 import PerformanceWidget from "$lib/components/widget/PerformanceWidget.svelte";
 import { WidgetEntry } from "../service/widgetManager.svelte";
 
+export const widgetNames = {
+    performance: {
+        english: "Performance",
+        portuguese: "Desempenho",
+    },
+};
+
 export const englishWidgets: WidgetEntry[] = [
     new WidgetEntry(
         "performance",
-        "Performance",
+        widgetNames.performance.english,
         PerformanceWidget,
         true,
         {
