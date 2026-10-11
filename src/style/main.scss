@@ -16,6 +16,7 @@ html {
       background: radial-gradient(circle at center, black, transparent);
     }
   }
+
 }
 
 .background {
@@ -36,9 +37,9 @@ html {
     transform: rotateX(50deg) rotateY(-15deg) rotateZ(40deg) scale(2);
     background: none;
     stroke: currentColor;
-    opacity: 0.15;
+    opacity: 0.08;
     border-radius: 0;
-    transition: stroke 200ms ease-in-out;
+    transition: stroke 200ms ease-in-out, opacity 200ms ease-in-out;
 
     html.dark & {
       background: none;
@@ -52,7 +53,7 @@ article, .modal-content {
   @apply text-neutral-700 dark:text-neutral-200;
 
   h1, h2 {
-    font-family: 'Orbitron', monospace;
+    font-family: 'Bricolage Grotesque', sans-serif;
   }
 
   h1 {

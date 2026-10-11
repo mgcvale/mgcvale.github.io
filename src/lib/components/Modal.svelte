@@ -12,8 +12,8 @@
 
 <!-- svelte-ignore svelte_component_deprecated -->
 {#if showing}
-    <div transition:fade={{duration: 300}} class="fixed top-0 left-0 modal-container w-screen h-screen bg-black bg-opacity-25 backdrop-blur-sm flex justify-center">
-        <div transition:scale={{duration: 300, opacity: 0}} class="modal m-auto max-h-fit bg-neutral-300 dark:bg-neutral-700 border-2 border-neutral-100 dark:border-neutral-800 rounded-lg p-2">
+    <div transition:fade={{duration: 300}} class="fixed top-0 left-0 modal-container w-screen h-screen bg-white/25 dark:bg-black backdrop-blur-sm flex justify-center">
+        <div transition:scale={{duration: 300, opacity: 0}} class="modal m-auto max-h-fit backdrop-blur-sm bg-gray-300/10 dark:bg-gray-600/10 border-2 border-black/5 dark:border-white/10 rounded-lg p-2">
             <svelte:component this={$modalStore} />
         </div>
     </div>
@@ -24,7 +24,7 @@
         z-index: 99999;
 
         .modal {
-            max-width: 80%;
+            max-width: calc(100% - 2rem);
             width: 440px;
         }
     }
