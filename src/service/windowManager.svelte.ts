@@ -38,6 +38,7 @@ export class WindowEntry {
 class WindowManager {
     windowList: WindowEntry[] = [];
     baseZIndex: number = 10;
+    activeWindow: WindowEntry | null = null;
 
     public addWindow(windowEntry: WindowEntry): void {
         this.windowList.push(windowEntry);
@@ -49,11 +50,13 @@ class WindowManager {
             this.minimizeWindow(window);
         } else {
             this.openWindow(window);
+            this.activeWindow = window;
         }
     }
 
     public openWindow(window: WindowEntry): void {
         window.open = true;
+        this.activeWindow = window;
         setTimeout(() => {
             window.minimized = false;
         }, 150)
@@ -113,6 +116,9 @@ class WindowManager {
                 w.zIndex--;
             }
         });
+
+        // and don't forget to set it as active
+        this.activeWindow = window;
     }
 
 }

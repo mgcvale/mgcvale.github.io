@@ -32,7 +32,46 @@
     let width = useSpring(widthSync, { stiffness: 400, damping: 25 });
   
     let hovered = trackedWritable(`IconContainer.hovered:${nextHoverStoreId++}`, false, baselineEstimator);
-    onDestroy(() => hovered.dispose());
+    let clickAnimation: Animation | undefined;
+    let pressed = $state(false);
+    let pressedPointer: number | undefined;
+    onDestroy(() => {
+      hovered.dispose();
+      clickAnimation?.cancel();
+    });
+
+    function handlePointerDown(event: PointerEvent) {
+      if (event.button !== 0) return;
+      clickAnimation?.cancel();
+      pressedPointer = event.pointerId;
+      pressed = true;
+    }
+
+    function resetPress() {
+      pressed = false;
+      pressedPointer = undefined;
+    }
+
+    function handlePointerRelease(event: PointerEvent) {
+      if (event.pointerId === pressedPointer) resetPress();
+    }
+
+    function handleClick(event: MouseEvent) {
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const element = event.currentTarget as HTMLElement;
+        const currentTransform = window.getComputedStyle(element).transform;
+        clickAnimation?.cancel();
+        clickAnimation = element.animate([
+          { transform: currentTransform },
+          { transform: 'translateY(8px)', offset: 0.2 },
+          { transform: 'translateY(0)' },
+        ], {
+          duration: 400,
+          easing: 'cubic-bezier(0.22, 0.61, 0.36, 1)',
+        });
+      }
+      action?.(event);
+    }
   
     function handleMouseEnter() {
       hovered.set(true);
@@ -42,8 +81,20 @@
       hovered.set(false);
     }
   </script>
+
+  <svelte:window
+    onpointerup={handlePointerRelease}
+    onpointercancel={handlePointerRelease}
+    onblur={resetPress}
+  />
   
-  <a {href} onclick={action}>
+  <a
+    {href}
+    onclick={handleClick}
+    onpointerdown={handlePointerDown}
+    class="block transition-transform duration-150 ease-out motion-reduce:transition-none motion-reduce:translate-y-0"
+    class:translate-y-2={pressed}
+  >
     <!-- svelte-ignore a11y_no_static_element_interactions -->
     <Motion
       let:motion
@@ -62,7 +113,7 @@
         bind:this={ref}
         onmouseenter={handleMouseEnter}
         onmouseleave={handleMouseLeave}
-        class="aspect-square rounded-full bg-gray-200 dark:bg-neutral-800 flex items-center justify-center relative group active:translate-y-2 transition-transform"
+        class="aspect-square rounded-full bg-gray-200 dark:bg-neutral-800 flex items-center justify-center relative group"
       >
         {#if $hovered}
           <div

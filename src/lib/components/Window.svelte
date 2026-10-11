@@ -264,11 +264,10 @@
     });
 
 </script>
-
 <section style:--z-index={zIndex} class:minimized={minimized}
          style:--top={`${springY.current - resizeTop.current}px`} style:--left={`${springX.current + resizeLeft.current}px`}
          style:--width={`${width + resizeRight.current - resizeLeft.current}px`} style:--height={`${height + resizeTop.current - resizeBottom.current}px`}
-         bind:this={section} class="window-section drop-shadow-xl fixed flex flex-col align-top justify-start border-3 border-white dark:border-neutral-900 rounded-lg mx-4 my-2 mt-0 overflow-hidden">
+         bind:this={section} class={`window-section fixed flex flex-col align-top justify-start border-3 border-white dark:border-neutral-900 rounded-lg mx-4 my-2 mt-0 overflow-hidden drop-shadow-xl`}>
     <header class="flex justify-end items-center flex-grow-0 bg-white dark:bg-neutral-900 px-1 text-center pb-1">
         <div bind:this={dragElement} class="drag-area flex-grow cursor-move">
             <h3 class="bricolage text-sm text-left select-none">{name}</h3>
