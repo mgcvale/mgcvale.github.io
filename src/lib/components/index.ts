@@ -4,6 +4,9 @@ import Header from './Header.svelte';
 import GridPattern from './GridPattern.svelte';
 import Footer from './Footer.svelte';
 import FloatingDockDesktop from "./FloatingDockDesktop.svelte";
+import ContextMenu from './ContextMenu.svelte';
+
+export type { ContextMenuEntry } from './ContextMenu.svelte';
 
 export {
     Window,
@@ -12,4 +15,5 @@ export {
     GridPattern,
     Footer,
     FloatingDockDesktop,
+    ContextMenu,
 }

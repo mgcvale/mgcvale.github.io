@@ -8,6 +8,15 @@ export default {
       backdropBlur: {
         xxs: "1px",
         xs: "2px"
+      },
+      keyframes: {
+        "menu-open": {
+          from: { opacity: "0", transform: "scale(0)" },
+          to: { opacity: "1", transform: "scale(1)" }
+        }
+      },
+      animation: {
+        "menu-open": "menu-open 200ms cubic-bezier(0.22, 1, 0.36, 1)"
       }
     }
   },

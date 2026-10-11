@@ -8,16 +8,19 @@ export const widgetNames = {
     },
 };
 
+export const performanceWidget = new WidgetEntry(
+    "performance",
+    widgetNames.performance.english,
+    PerformanceWidget,
+    true,
+    {
+        x: 24,
+        y: 24,
+        anchor: "bottom-right"
+    }
+);
+
 export const englishWidgets: WidgetEntry[] = [
-    new WidgetEntry(
-        "performance",
-        widgetNames.performance.english,
-        PerformanceWidget,
-        true,
-        {
-            x: 24,
-            y: 24,
-            anchor: "bottom-right"
-        }
-    ),
+    performanceWidget
 ];
+

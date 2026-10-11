@@ -17,9 +17,12 @@
     import { widgetManager } from "../service/widgetManager.svelte";
     import { englishWidgets, widgetNames } from "../data/widgets";
     import BaseWidget from "$lib/components/widget/BaseWidget.svelte";
+    import ContextMenu from "$lib/components/ContextMenu.svelte";
+    import { contextMenuEntries } from "../data/context_menu";
 
     let header: HTMLElement | undefined = $state();
     let footer: HTMLElement | undefined = $state();
+    let desktop: HTMLElement | undefined = $state();
     let isMobile = $state(false);
     let oldAppLang = $applicationState.language;
 
@@ -113,12 +116,30 @@
 
     englishWidgets.forEach(w => widgetManager.addWidget(w));
 
+    let contextMenuOpen = $state(false);
+    let contextMenuX = $state(0);
+    let contextMenuY = $state(0);
+
+    function onContextMenu(event: MouseEvent) {
+        if (event.defaultPrevented || (
+            event.target !== desktop &&
+            event.target !== document.body &&
+            event.target !== document.documentElement
+        )) return;
+
+        event.preventDefault();
+        contextMenuX = event.clientX;
+        contextMenuY = event.clientY;
+        contextMenuOpen = true;
+    }
+
     //console.log(windowManager.getWindowlist());
     //console.log(windowManager.getWindowlist().length);
 </script>
+<svelte:window oncontextmenu={onContextMenu} />
 
 <Header bind:ref={header}></Header>
-<main>
+<main bind:this={desktop}>
     {#each windowManager.getWindowlist() as window}
         {#if window.open}
             <Window name={window.name} bind:minimized={window.minimized}
@@ -155,4 +176,6 @@
     {/if}
 
 </main>
+<ContextMenu entries={contextMenuEntries} bind:open={contextMenuOpen} x={contextMenuX} y={contextMenuY} />
+
 <Footer bind:ref={footer}></Footer>
